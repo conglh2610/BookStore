@@ -62,6 +62,30 @@
       <DependentUpon>UserInfo.cs</DependentUpon>
     </Compile>
     <Compile Include="Deletgates.cs" />
+    <Compile Include="frmAuthorDetail.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmAuthorDetail.Designer.cs">
+      <DependentUpon>frmAuthorDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmAuthorMngt.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmAuthorMngt.Designer.cs">
+      <DependentUpon>frmAuthorMngt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmBookDetail.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmBookDetail.Designer.cs">
+      <DependentUpon>frmBookDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmBookMngt.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmBookMngt.Designer.cs">
+      <DependentUpon>frmBookMngt.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmCategoryDetail.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -96,6 +120,18 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="CustomControls\UserInfo.resx">
       <DependentUpon>UserInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmAuthorDetail.resx">
+      <DependentUpon>frmAuthorDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmAuthorMngt.resx">
+      <DependentUpon>frmAuthorMngt.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmBookDetail.resx">
+      <DependentUpon>frmBookDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmBookMngt.resx">
+      <DependentUpon>frmBookMngt.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmCategoryDetail.resx">
       <DependentUpon>frmCategoryDetail.cs</DependentUpon>

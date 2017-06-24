@@ -1,6 +1,6 @@
 ﻿namespace BookStore
 {
-    partial class frmCategoryMngt
+    partial class frmAuthorMngt
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.btnAddCategory = new System.Windows.Forms.Button();
+            this.btnAddAuthor = new System.Windows.Forms.Button();
             this.btnBack = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.pnlGrid = new System.Windows.Forms.Panel();
@@ -37,15 +37,15 @@
             this.txtFilter = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
-            // btnAddCategory
+            // btnAddAuthor
             // 
-            this.btnAddCategory.Location = new System.Drawing.Point(24, 79);
-            this.btnAddCategory.Name = "btnAddCategory";
-            this.btnAddCategory.Size = new System.Drawing.Size(75, 23);
-            this.btnAddCategory.TabIndex = 1;
-            this.btnAddCategory.Text = "Add ";
-            this.btnAddCategory.UseVisualStyleBackColor = true;
-            this.btnAddCategory.Click += new System.EventHandler(this.btnAddCategory_Click);
+            this.btnAddAuthor.Location = new System.Drawing.Point(24, 79);
+            this.btnAddAuthor.Name = "btnAddAuthor";
+            this.btnAddAuthor.Size = new System.Drawing.Size(75, 23);
+            this.btnAddAuthor.TabIndex = 1;
+            this.btnAddAuthor.Text = "Add ";
+            this.btnAddAuthor.UseVisualStyleBackColor = true;
+            this.btnAddAuthor.Click += new System.EventHandler(this.btnAddAuthor_Click);
             // 
             // btnBack
             // 
@@ -98,7 +98,7 @@
             this.txtFilter.TabIndex = 9;
             this.txtFilter.TextChanged += new System.EventHandler(this.txtFilter_TextChanged);
             // 
-            // frmCategoryMngt
+            // frmAuthorMngt
             // 
             this.ClientSize = new System.Drawing.Size(557, 407);
             this.Controls.Add(this.txtFilter);
@@ -107,16 +107,16 @@
             this.Controls.Add(this.pnlGrid);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnBack);
-            this.Controls.Add(this.btnAddCategory);
-            this.Name = "frmCategoryMngt";
-            this.Text = "Category Management";
+            this.Controls.Add(this.btnAddAuthor);
+            this.Name = "frmAuthorMngt";
+            this.Text = "Author Mangement";
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-        private System.Windows.Forms.Button btnAddCategory;
+        private System.Windows.Forms.Button btnAddAuthor;
         private System.Windows.Forms.Button btnBack;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Panel pnlGrid;

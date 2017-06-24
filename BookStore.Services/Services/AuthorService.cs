@@ -17,6 +17,9 @@ namespace BookStore.Services.Services
             _dbContext = dbContext;
         }
 
-
+        public IEnumerable<Author> SearchAuthor(string strText)
+        {
+            return _dbContext.Author.Where(t => t.Title.Contains(strText) || t.Description.Contains(strText)).AsEnumerable();
+        }
     }
 }

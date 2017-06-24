@@ -16,7 +16,7 @@ namespace BookStore
         private User _user;
         private BookStoreDB _db;
         private CustomControls.UserInfo userInfo;
-       
+
         public frmMain(BookStoreDB db, User user)
         {
             _user = user;
@@ -41,9 +41,9 @@ namespace BookStore
 
         private void tsmAuthor_Click(object sender, EventArgs e)
         {
-            //var authorForm = new frmAuthorMngt(_user);
-            //authorForm.Show();
-            //this.Close();
+            var authorForm = new frmAuthorMngt(_db, _user);
+            authorForm.Show();
+            this.Close();
         }
 
         private void tsmBook_Click(object sender, EventArgs e)

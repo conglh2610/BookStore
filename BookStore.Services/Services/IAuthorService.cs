@@ -12,6 +12,6 @@ namespace BookStore.Services.Services
 {
     public interface IAuthorService : IRepository<Author>
     {
-
+        IEnumerable<Author> SearchAuthor(string strText);
     }
 }
