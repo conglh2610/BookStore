@@ -64,7 +64,7 @@
             this.txtUserName.Name = "txtUserName";
             this.txtUserName.Size = new System.Drawing.Size(175, 20);
             this.txtUserName.TabIndex = 2;
-            this.txtUserName.Text = "admin@bookstore.com";
+            this.txtUserName.Text = "administrator@bookstore.com";
             this.txtUserName.Validating += new System.ComponentModel.CancelEventHandler(this.txtUserName_Validating);
             // 
             // txtPassword

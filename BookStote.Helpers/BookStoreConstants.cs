@@ -9,6 +9,13 @@ namespace BookStote.Helpers
     public class BookStoreConstants
     {
         public const string CONFIRM_DIALOG_NAME = "Confirmation";
+
+        public const string AUTHOR_DIR_PATH = @"\Images\Authors";
+
+        public const string BOOK_DIR_PATH = @"\Images\Books";
+
+        public const string IMAGE_FILETER = "Images only. |*.jpg; *.jpeg; *.png; *.gif";
+
         public const string MSG_REQUIRED_FIELD = "Please enter the required filed.";
 
         public const string MSG_EMAIL_INCORRECTED_FORMAT = "Please enter correct email.";

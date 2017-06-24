@@ -1,5 +1,6 @@
 ﻿using BookStore.Model.Generated;
 using BookStore.Services.Services;
+using BookStote.Helpers;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -70,7 +71,7 @@ namespace BookStore
 
             if (objTextBox.Text.Trim() == string.Empty)
             {
-                errorProvider1.SetError(objTextBox, "Please enter the required filed.");
+                errorProvider1.SetError(objTextBox, BookStoreConstants.MSG_REQUIRED_FIELD);
                 e.Cancel = true;
             }
             else

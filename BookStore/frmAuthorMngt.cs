@@ -79,6 +79,8 @@ namespace BookStore
                 authorUpdate.Title = currentRow.Cells["Title"].Value.ToString();
                 var descriptionValue = currentRow.Cells["Description"].Value;
                 authorUpdate.Description = descriptionValue?.ToString() ?? string.Empty;
+                var coverValue = currentRow.Cells["Cover"].Value;
+                authorUpdate.Cover = coverValue?.ToString() ?? string.Empty;
                 var caregoryFrom = new frmAuthorDetail(_authorService, authorUpdate);
                 caregoryFrom.AddUpdateItemCallback = new AddItemDelegate(this.AddUpdateItemCallbackFn);
                 caregoryFrom.ShowDialog();
@@ -117,11 +119,16 @@ namespace BookStore
             style.Font = new Font(grvAuthor.Font, FontStyle.Bold);
 
             DataGridViewColumn colId = new DataGridViewTextBoxColumn();
-            colId.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
             colId.DataPropertyName = "Id";
             colId.Name = "Id";
             colId.Visible = false;
             grvAuthor.Columns.Add(colId);
+
+            DataGridViewColumn colCover = new DataGridViewTextBoxColumn();
+            colCover.DataPropertyName = "Cover";
+            colCover.Name = "Cover";
+            colCover.Visible = false;
+            grvAuthor.Columns.Add(colCover);
 
             DataGridViewColumn colTitle = new DataGridViewTextBoxColumn();
             colTitle.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
