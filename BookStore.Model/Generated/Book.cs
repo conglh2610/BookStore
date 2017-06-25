@@ -15,6 +15,8 @@ namespace BookStore.Model.Generated
 
         public int AuthorId { get; set; }
 
+        public int? CategoryId { get; set; }
+
         [StringLength(250)]
         public string Cover { get; set; }
 
@@ -31,5 +33,9 @@ namespace BookStore.Model.Generated
 
         [Column(TypeName = "datetime2")]
         public DateTime? LastUpdateTime { get; set; }
+
+        public virtual Author Author { get; set; }
+
+        public virtual Category Category { get; set; }
     }
 }
