@@ -17,10 +17,13 @@ namespace BookStore
 {
     public partial class frmRegistry : Form
     {
+        #region Global Variables
         private UserService _userService;
         private BookStoreDB _db;
         public UserResitryDelegate UserResitryCallback { get; internal set; }
+        #endregion
 
+        #region Contructors
         public frmRegistry()
         {
             InitializeComponent();
@@ -33,6 +36,9 @@ namespace BookStore
             InitializeComponent();
         }
 
+        #endregion
+
+        #region Events
         private void btnCancel_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -40,47 +46,51 @@ namespace BookStore
 
         private void btnSubmit_Click(object sender, EventArgs e)
         {
-            var user = new User();
-            user.FirstName = txtFirstName.Text;
-            user.LastName = txtLastName.Text;
-            user.Email = txtEmail.Text;
-            user.Password = StringHelpers.EncryptLoginPassword(txtPassword.Text, "SHA1");
-
-            try
+            // validate before save data
+            if (this.ValidateChildren(ValidationConstraints.Enabled))
             {
-                user.RoleId = new RoleService(_db).GetRoleIdByRoleType(BookStoreConstants.USER_ROLE_TYPE);
-                if (user.RoleId < 1)
+                var user = new User();
+                user.FirstName = txtFirstName.Text;
+                user.LastName = txtLastName.Text;
+                user.Email = txtEmail.Text;
+                user.Password = StringHelpers.EncryptLoginPassword(txtPassword.Text, "SHA1");
+
+                try
                 {
-                    MessageBox.Show(BookStoreConstants.MSG_DB_ERROR);
-                }
-                else
-                {
-                    var userByEmail = _userService.GetUserByEmail(txtEmail.Text);
-                    if (userByEmail == null)
+                    user.RoleId = new RoleService(_db).GetRoleIdByRoleType(BookStoreConstants.USER_ROLE_TYPE);
+                    if (user.RoleId < 1)
                     {
-                        _userService.Insert(user);
+                        MessageBox.Show(BookStoreConstants.MSG_DB_ERROR);
                     }
                     else
                     {
-                        MessageBox.Show(BookStoreConstants.MSG_REGISTRY_DUPPLICATED);
-                        return;
+                        var userByEmail = _userService.GetUserByEmail(txtEmail.Text);
+                        if (userByEmail == null)
+                        {
+                            _userService.Insert(user);
+                        }
+                        else
+                        {
+                            MessageBox.Show(BookStoreConstants.MSG_REGISTRY_DUPPLICATED);
+                            return;
+                        }
+
                     }
-                   
                 }
-            }
-            catch (Exception)
-            {
-                MessageBox.Show(BookStoreConstants.MSG_DB_ERROR);
-                return;
-            }
+                catch (Exception)
+                {
+                    MessageBox.Show(BookStoreConstants.MSG_DB_ERROR);
+                    return;
+                }
 
-            DialogResult result = MessageBox.Show(BookStoreConstants.MSG_REGISTRY_SUCCESS, BookStoreConstants.CONFIRM_DIALOG_NAME, MessageBoxButtons.OK);
-            if (result == DialogResult.OK)
-            {
-                UserResitryCallback(txtEmail.Text, txtPassword.Text);
-                this.Close();
-            }
+                DialogResult result = MessageBox.Show(BookStoreConstants.MSG_REGISTRY_SUCCESS, BookStoreConstants.CONFIRM_DIALOG_NAME, MessageBoxButtons.OK);
+                if (result == DialogResult.OK)
+                {
+                    UserResitryCallback(txtEmail.Text, txtPassword.Text);
+                    this.Close();
+                }
 
+            }
         }
 
         private void txtFirstName_Validating(object sender, CancelEventArgs e)
@@ -165,7 +175,6 @@ namespace BookStore
                 errorProvider1.SetError(objTextBox, null);
             }
         }
-
-        
+        #endregion
     }
 }

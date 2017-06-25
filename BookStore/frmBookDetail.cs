@@ -16,12 +16,14 @@ namespace BookStore
 {
     public partial class frmBookDetail : Form
     {
+        #region Global Variables
         private BookService _bookService;
         private Book _book;
         string _orgFileName = string.Empty;
-
         public Deletgates.AddItemDelegate AddUpdateItemCallback { get; internal set; }
+        #endregion
 
+        #region Constructors
         public frmBookDetail(Book book, User user)
         {
             InitializeComponent();
@@ -33,7 +35,7 @@ namespace BookStore
 
             _book = book;
             // get list from service and bind to datasource
-            cbxAuthor.DataSource = authorService.List().OrderBy(t=>t.Title).ToList();
+            cbxAuthor.DataSource = authorService.List().OrderBy(t => t.Title).ToList();
             cbxAuthor.DisplayMember = "Title";
             cbxAuthor.ValueMember = "Id";
 
@@ -71,7 +73,7 @@ namespace BookStore
                 {
                     btnSave.Location = btnDelete.Location;
                     btnDelete.Visible = false;
-                }                
+                }
             }
 
             else
@@ -82,7 +84,9 @@ namespace BookStore
             }
 
         }
+        #endregion
 
+        #region Events
         private void btnSave_Click(object sender, EventArgs e)
         {
             if (this.ValidateChildren(ValidationConstraints.Enabled))
@@ -131,7 +135,26 @@ namespace BookStore
 
                 this.Close();
             }
-           
+
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show(BookStoreConstants.MSG_CONFIRM_DELETE, BookStoreConstants.CONFIRM_DIALOG_NAME, MessageBoxButtons.YesNo);
+            if (result == DialogResult.Yes)
+            {
+                try
+                {
+                    _bookService.Delete(_book.Id);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(BookStoreConstants.MSG_DB_ERROR + ex.Message);
+                }
+
+                this.Close();
+            }
+
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -152,25 +175,6 @@ namespace BookStore
                 picCover.Image = Image.FromFile(fd.FileName);
                 _orgFileName = fd.FileName;
             }
-        }
-
-        private void btnDelete_Click(object sender, EventArgs e)
-        {
-            DialogResult result = MessageBox.Show(BookStoreConstants.MSG_CONFIRM_DELETE, BookStoreConstants.CONFIRM_DIALOG_NAME, MessageBoxButtons.YesNo);
-            if (result == DialogResult.Yes)
-            {
-                try
-                {
-                    _bookService.Delete(_book.Id);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(BookStoreConstants.MSG_DB_ERROR + ex.Message);
-                }
-
-                this.Close();
-            }
-
         }
 
         protected override void OnFormClosing(FormClosingEventArgs e)
@@ -252,5 +256,7 @@ namespace BookStore
                 errorProvider1.SetError(objTextBox, null);
             }
         }
+        #endregion
+
     }
 }

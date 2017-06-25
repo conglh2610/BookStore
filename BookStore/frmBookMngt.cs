@@ -15,10 +15,14 @@ namespace BookStore
 {
     public partial class frmBookMngt : frmMain
     {
+        #region Global Variables
         BookService _bookService = null;
         BookStoreDB _db = null;
         User _user = null;
         AddItemDelegate _addUpdateItemCallback = null;
+        #endregion
+
+        #region Constructors
         public frmBookMngt(User user) : base(user)
         {
             InitializeComponent();
@@ -65,7 +69,9 @@ namespace BookStore
             SearchBook();
 
         }
+        #endregion
 
+        #region Events
         private void btnAdd_Click(object sender, EventArgs e)
         {
             var bookDetailDialog = new frmBookDetail(null, _user);
@@ -73,11 +79,13 @@ namespace BookStore
             bookDetailDialog.ShowDialog();
         }
 
-        private void AddUpdateItemCallbackFn(string strValue)
+        private void btnSearch_Click(object sender, EventArgs e)
         {
             SearchBook();
         }
+        #endregion
 
+        #region Private Methods
         private void SearchBook()
         {
             var response = _bookService.SearchBook(txtFilter.Text, txtYear.Text, Convert.ToInt32(cbxAuthor.SelectedValue), Convert.ToInt32(cbxCategory.SelectedValue)).ToList();
@@ -93,10 +101,11 @@ namespace BookStore
             }
 
         }
-
-        private void btnSearch_Click(object sender, EventArgs e)
+        private void AddUpdateItemCallbackFn(string strValue)
         {
+            _bookService = new BookService(new BookStoreDB());
             SearchBook();
         }
+        #endregion
     }
 }

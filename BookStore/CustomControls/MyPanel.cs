@@ -11,15 +11,22 @@ namespace BookStore.CustomControls
     [System.ComponentModel.DesignerCategory("Code")]
     public class MyPanel : Panel
     {
+        #region Global Viarables
+        string _strHexColor = string.Empty;
+        #endregion
+
+        #region Constructors
         public MyPanel()
         {
         }
-        string _strHexColor = string.Empty;
+
         public MyPanel(string strHexColor)
         {
             _strHexColor = strHexColor;
         }
+        #endregion
 
+        #region Events
         protected override void OnPaint(PaintEventArgs e)
         {
             Pen pen;
@@ -32,11 +39,11 @@ namespace BookStore.CustomControls
             {
                 pen = new Pen(ColorTranslator.FromHtml(_strHexColor), 1);
             }
-            
+
             using (SolidBrush brush = new SolidBrush(BackColor))
                 e.Graphics.FillRectangle(brush, ClientRectangle);
             e.Graphics.DrawRectangle(pen, 0, 0, ClientSize.Width - 1, ClientSize.Height - 1);
         }
-
+        #endregion
     }
 }

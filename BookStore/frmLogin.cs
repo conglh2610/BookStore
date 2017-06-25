@@ -15,15 +15,21 @@ namespace BookStore
 {
     public partial class frmLogin : Form
     {
+        #region Global Viarables
         UserService _userService = null;
         BookStoreDB _db = null;
+        #endregion
+
+        #region Constructors
         public frmLogin()
         {
             InitializeComponent();
             _db = new BookStoreDB();
             _userService = new UserService(_db);
-
         }
+        #endregion
+
+        #region Events
         /// <summary>
         /// User clicks to access the Book Store. 
         /// </summary>
@@ -31,12 +37,12 @@ namespace BookStore
         /// <param name="e"></param>
         private void btnLogin_Click(object sender, EventArgs e)
         {
-            
+
             var user = _userService.GetLogin(txtUserName.Text, txtPassword.Text);
             if (user != null)
             {
                 lblErrorMessage.Text = String.Empty;
-                var bookForm = new frmBookMngt( user);
+                var bookForm = new frmBookMngt(user);
                 bookForm.Show();
                 this.Hide();
             }
@@ -83,12 +89,15 @@ namespace BookStore
             registryForm.UserResitryCallback = new Deletgates.UserResitryDelegate(UserResitryFn);
             registryForm.ShowDialog();
         }
+        #endregion
 
+        #region Private Methods
         private void UserResitryFn(string strEmail, string strPassword)
         {
             txtUserName.Text = strEmail;
             txtPassword.Text = strPassword;
             btnLogin.Focus();
         }
+        #endregion
     }
 }

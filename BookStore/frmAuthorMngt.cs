@@ -50,7 +50,7 @@ namespace BookStore
             caregoryFrom.AddUpdateItemCallback = new AddItemDelegate(this.AddUpdateItemCallbackFn);
             caregoryFrom.ShowDialog();
         }
-
+        
         /// <summary>
         /// On the filter textbox changed
         /// </summary>
@@ -105,6 +105,12 @@ namespace BookStore
             }
         }
 
+        private void btnBack_Click(object sender, EventArgs e)
+        {
+            var bookMngtForm = new frmBookMngt(_user);
+            bookMngtForm.Show();
+            this.Close();
+        }
         #endregion
 
         #region Private Methods
@@ -185,12 +191,5 @@ namespace BookStore
         }
 
         #endregion
-
-        private void btnBack_Click(object sender, EventArgs e)
-        {
-            var bookMngtForm = new frmBookMngt(_user);
-            bookMngtForm.Show();
-            this.Close();
-        }
     }
 }

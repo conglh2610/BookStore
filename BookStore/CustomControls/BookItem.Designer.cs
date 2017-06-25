@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.myPanel1 = new BookStore.CustomControls.MyPanel();
             this.lblTitle = new System.Windows.Forms.LinkLabel();
             this.lblAuthor = new System.Windows.Forms.Label();
@@ -38,6 +39,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.lblDescription = new System.Windows.Forms.Label();
             this.picCover = new System.Windows.Forms.PictureBox();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.myPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picCover)).BeginInit();
             this.SuspendLayout();
@@ -63,7 +65,8 @@
             // 
             this.lblTitle.AutoSize = true;
             this.lblTitle.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
-            this.lblTitle.Location = new System.Drawing.Point(7, 7);
+            this.lblTitle.Location = new System.Drawing.Point(7, 4);
+            this.lblTitle.MaximumSize = new System.Drawing.Size(160, 50);
             this.lblTitle.Name = "lblTitle";
             this.lblTitle.Size = new System.Drawing.Size(37, 13);
             this.lblTitle.TabIndex = 18;
@@ -75,7 +78,7 @@
             // 
             this.lblAuthor.AutoSize = true;
             this.lblAuthor.ForeColor = System.Drawing.Color.Navy;
-            this.lblAuthor.Location = new System.Drawing.Point(68, 216);
+            this.lblAuthor.Location = new System.Drawing.Point(59, 232);
             this.lblAuthor.Name = "lblAuthor";
             this.lblAuthor.Size = new System.Drawing.Size(35, 13);
             this.lblAuthor.TabIndex = 17;
@@ -85,7 +88,7 @@
             // 
             this.lblYear.AutoSize = true;
             this.lblYear.ForeColor = System.Drawing.Color.Navy;
-            this.lblYear.Location = new System.Drawing.Point(68, 199);
+            this.lblYear.Location = new System.Drawing.Point(59, 215);
             this.lblYear.Name = "lblYear";
             this.lblYear.Size = new System.Drawing.Size(35, 13);
             this.lblYear.TabIndex = 16;
@@ -96,7 +99,8 @@
             this.lblPublisher.AutoSize = true;
             this.lblPublisher.BackColor = System.Drawing.SystemColors.Control;
             this.lblPublisher.ForeColor = System.Drawing.Color.Navy;
-            this.lblPublisher.Location = new System.Drawing.Point(69, 181);
+            this.lblPublisher.Location = new System.Drawing.Point(60, 182);
+            this.lblPublisher.MaximumSize = new System.Drawing.Size(100, 50);
             this.lblPublisher.Name = "lblPublisher";
             this.lblPublisher.Size = new System.Drawing.Size(35, 13);
             this.lblPublisher.TabIndex = 15;
@@ -105,7 +109,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(2, 217);
+            this.label3.Location = new System.Drawing.Point(16, 232);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(41, 13);
             this.label3.TabIndex = 14;
@@ -114,7 +118,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 200);
+            this.label2.Location = new System.Drawing.Point(25, 215);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(35, 13);
             this.label2.TabIndex = 13;
@@ -123,7 +127,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(2, 182);
+            this.label1.Location = new System.Drawing.Point(0, 183);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(58, 13);
             this.label1.TabIndex = 12;
@@ -133,17 +137,18 @@
             // 
             this.lblDescription.AutoSize = true;
             this.lblDescription.ForeColor = System.Drawing.Color.Navy;
-            this.lblDescription.Location = new System.Drawing.Point(3, 233);
+            this.lblDescription.Location = new System.Drawing.Point(3, 247);
+            this.lblDescription.MaximumSize = new System.Drawing.Size(170, 30);
             this.lblDescription.Name = "lblDescription";
-            this.lblDescription.Size = new System.Drawing.Size(35, 13);
+            this.lblDescription.Size = new System.Drawing.Size(26, 13);
             this.lblDescription.TabIndex = 11;
-            this.lblDescription.Text = "label2";
+            this.lblDescription.Text = "Des";
             // 
             // picCover
             // 
-            this.picCover.Location = new System.Drawing.Point(28, 25);
+            this.picCover.Location = new System.Drawing.Point(27, 35);
             this.picCover.Name = "picCover";
-            this.picCover.Size = new System.Drawing.Size(115, 148);
+            this.picCover.Size = new System.Drawing.Size(115, 142);
             this.picCover.TabIndex = 10;
             this.picCover.TabStop = false;
             // 
@@ -173,5 +178,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label lblDescription;
         private System.Windows.Forms.PictureBox picCover;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }

@@ -13,9 +13,12 @@ namespace BookStore
 {
     public partial class frmMain : Form
     {
+        #region Global Variables
         private User _user;
         private CustomControls.UserInfo userInfo;
+        #endregion
 
+        #region Constructors
         public frmMain(User user)
         {
             _user = user;
@@ -23,13 +26,10 @@ namespace BookStore
             this.userInfo = new CustomControls.UserInfo(user);
             this.userInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.plnHeader.Controls.Add(this.userInfo, 1, 0);
-
         }
+        #endregion
 
-        public frmMain()
-        {
-        }
-
+        #region Events
         private void tsmCategory_Click(object sender, EventArgs e)
         {
             var categoryForm = new frmCategoryMngt(_user);
@@ -55,7 +55,7 @@ namespace BookStore
         {
             this.Close();
         }
-
+        #endregion
     }
 }
 

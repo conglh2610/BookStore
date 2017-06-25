@@ -13,6 +13,7 @@ namespace BookStore.CustomControls
 {
     public partial class UserInfo : UserControl
     {
+        #region Constructors
         public UserInfo()
         {
             InitializeComponent();
@@ -22,7 +23,9 @@ namespace BookStore.CustomControls
             InitializeComponent();
             lblDisplayName.Text = String.Format("{0} {1}", user.FirstName, user.LastName);
         }
+        #endregion
 
+        #region Events
         private void btnLogout_Click(object sender, EventArgs e)
         {
             var loginForm = new frmLogin();
@@ -30,5 +33,6 @@ namespace BookStore.CustomControls
             parentForm.Close();
             loginForm.Show();
         }
+        #endregion
     }
 }

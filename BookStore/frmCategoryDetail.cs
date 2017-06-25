@@ -16,10 +16,14 @@ namespace BookStore
 {
     public partial class frmCategoryDetail : Form
     {
+        #region Global Variables
         public AddItemDelegate AddUpdateItemCallback { get; internal set; }
         private CategoryService _categoryService = null;
         private Category _categoryUpdate = null;
 
+        #endregion
+
+        #region Constructors
         public frmCategoryDetail(User user, Category categoryUpdate)
         {
             InitializeComponent();
@@ -45,13 +49,12 @@ namespace BookStore
                 btnSave.Location = btnDelete.Location;
                 btnDelete.Visible = false;
             }
-           
-        }      
 
-        protected override void OnFormClosing(FormClosingEventArgs e)
-        {
-            AddUpdateItemCallback("");
         }
+        #endregion
+
+        #region Events
+
         private void btnSave_Click(object sender, EventArgs e)
         {
             if (this.ValidateChildren(ValidationConstraints.Enabled))
@@ -77,27 +80,7 @@ namespace BookStore
 
                 this.Close();
             }
-            
-        }
 
-        private void txtTitle_Validating(object sender, CancelEventArgs e)
-        {
-            TextBox objTextBox = (TextBox)sender;
-
-            if (objTextBox.Text.Trim() == string.Empty)
-            {
-                errorProvider1.SetError(objTextBox, BookStoreConstants.MSG_REQUIRED_FIELD);
-                e.Cancel = true;
-            }
-            else
-            {
-                errorProvider1.SetError(objTextBox, null);
-            }
-        }
-
-        private void btnCancel_Click(object sender, EventArgs e)
-        {
-            this.Close();
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
@@ -118,5 +101,31 @@ namespace BookStore
                 this.Close();
             }
         }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void txtTitle_Validating(object sender, CancelEventArgs e)
+        {
+            TextBox objTextBox = (TextBox)sender;
+
+            if (objTextBox.Text.Trim() == string.Empty)
+            {
+                errorProvider1.SetError(objTextBox, BookStoreConstants.MSG_REQUIRED_FIELD);
+                e.Cancel = true;
+            }
+            else
+            {
+                errorProvider1.SetError(objTextBox, null);
+            }
+        }
+        
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            AddUpdateItemCallback("");
+        }
+        #endregion
     }
 }

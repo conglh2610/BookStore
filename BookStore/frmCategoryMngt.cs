@@ -37,7 +37,7 @@ namespace BookStore
 
         #endregion
 
-        #region Events Handler
+        #region Events
 
         /// <summary>
         /// On Button Add Category Clicked
@@ -99,6 +99,13 @@ namespace BookStore
 
                 }
             }
+        }
+
+        private void btnBack_Click(object sender, EventArgs e)
+        {
+            var bookMngtForm = new frmBookMngt(_user);
+            bookMngtForm.Show();
+            this.Close();
         }
 
         #endregion
@@ -176,13 +183,5 @@ namespace BookStore
         }
 
         #endregion
-
-        private void btnBack_Click(object sender, EventArgs e)
-        {
-            var bookMngtForm = new frmBookMngt(_user);
-            bookMngtForm.Show();
-            this.Close();
-        }
-
     }
 }
