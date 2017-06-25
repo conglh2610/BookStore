@@ -52,9 +52,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CustomControls\MyTextBox.cs">
-      <SubType>Component</SubType>
+    <Compile Include="CustomControls\BookItem.cs">
+      <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="CustomControls\BookItem.Designer.cs">
+      <DependentUpon>BookItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CustomControls\MyPanel.cs" />
     <Compile Include="CustomControls\UserInfo.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -118,6 +122,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="CustomControls\BookItem.resx">
+      <DependentUpon>BookItem.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="CustomControls\UserInfo.resx">
       <DependentUpon>UserInfo.cs</DependentUpon>
     </EmbeddedResource>

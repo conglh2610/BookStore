@@ -110,7 +110,7 @@ namespace BookStore
             grvAuthor.AutoSize = false;
             grvAuthor.Dock = DockStyle.Fill;
             grvAuthor.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            //grvAuthor.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            
             grvAuthor.CellContentClick += grvAuthor_CellContentClick;
 
             DataGridViewCellStyle style = grvAuthor.ColumnHeadersDefaultCellStyle;

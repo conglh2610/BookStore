@@ -79,5 +79,10 @@ namespace BookStore
                 errorProvider1.SetError(objTextBox, null);
             }
         }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }

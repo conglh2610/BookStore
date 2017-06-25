@@ -48,9 +48,9 @@ namespace BookStore
 
         private void tsmBook_Click(object sender, EventArgs e)
         {
-            //var bookForm = new frmBookSearch(_user);
-            //bookForm.Show();
-            //this.Close();
+            var bookForm = new frmBookMngt(_db, _user);
+            bookForm.Show();
+            this.Close();
         }
 
         private void tsmExit_Click(object sender, EventArgs e)

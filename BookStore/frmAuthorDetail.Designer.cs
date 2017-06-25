@@ -31,15 +31,18 @@
             this.components = new System.ComponentModel.Container();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.rtbDesription = new System.Windows.Forms.RichTextBox();
-            this.btnSave = new System.Windows.Forms.Button();
+            this.rtbDescription = new System.Windows.Forms.RichTextBox();
             this.txtTitle = new System.Windows.Forms.TextBox();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
-            this.picCover = new System.Windows.Forms.PictureBox();
             this.label3 = new System.Windows.Forms.Label();
             this.btnBrowser = new System.Windows.Forms.Button();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
+            this.btnCancel = new System.Windows.Forms.Button();
+            this.btnSave = new System.Windows.Forms.Button();
+            this.myPanel1 = new BookStore.CustomControls.MyPanel();
+            this.picCover = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
+            this.myPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picCover)).BeginInit();
             this.SuspendLayout();
             // 
@@ -61,23 +64,13 @@
             this.label2.TabIndex = 0;
             this.label2.Text = "Description:";
             // 
-            // rtbDesription
+            // rtbDescription
             // 
-            this.rtbDesription.Location = new System.Drawing.Point(104, 70);
-            this.rtbDesription.Name = "rtbDesription";
-            this.rtbDesription.Size = new System.Drawing.Size(268, 92);
-            this.rtbDesription.TabIndex = 2;
-            this.rtbDesription.Text = "";
-            // 
-            // btnSave
-            // 
-            this.btnSave.Location = new System.Drawing.Point(297, 378);
-            this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(75, 23);
-            this.btnSave.TabIndex = 3;
-            this.btnSave.Text = "Save";
-            this.btnSave.UseVisualStyleBackColor = true;
-            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            this.rtbDescription.Location = new System.Drawing.Point(104, 70);
+            this.rtbDescription.Name = "rtbDescription";
+            this.rtbDescription.Size = new System.Drawing.Size(268, 92);
+            this.rtbDescription.TabIndex = 2;
+            this.rtbDescription.Text = "";
             // 
             // txtTitle
             // 
@@ -90,14 +83,6 @@
             // errorProvider1
             // 
             this.errorProvider1.ContainerControl = this;
-            // 
-            // picCover
-            // 
-            this.picCover.Location = new System.Drawing.Point(104, 210);
-            this.picCover.Name = "picCover";
-            this.picCover.Size = new System.Drawing.Size(268, 146);
-            this.picCover.TabIndex = 4;
-            this.picCover.TabStop = false;
             // 
             // label3
             // 
@@ -118,22 +103,62 @@
             this.btnBrowser.UseVisualStyleBackColor = true;
             this.btnBrowser.Click += new System.EventHandler(this.btnBrowser_Click);
             // 
+            // btnCancel
+            // 
+            this.btnCancel.Location = new System.Drawing.Point(272, 480);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(100, 23);
+            this.btnCancel.TabIndex = 10;
+            this.btnCancel.Text = "Cancel";
+            this.btnCancel.UseVisualStyleBackColor = true;
+            // 
+            // btnSave
+            // 
+            this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSave.Location = new System.Drawing.Point(169, 480);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(97, 23);
+            this.btnSave.TabIndex = 9;
+            this.btnSave.Text = "Save";
+            this.btnSave.UseVisualStyleBackColor = true;
+            // 
+            // myPanel1
+            // 
+            this.myPanel1.Controls.Add(this.picCover);
+            this.myPanel1.Location = new System.Drawing.Point(104, 204);
+            this.myPanel1.Name = "myPanel1";
+            this.myPanel1.Size = new System.Drawing.Size(268, 270);
+            this.myPanel1.TabIndex = 11;
+            // 
+            // picCover
+            // 
+            this.picCover.Location = new System.Drawing.Point(22, 0);
+            this.picCover.Name = "picCover";
+            this.picCover.Size = new System.Drawing.Size(226, 270);
+            this.picCover.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.picCover.TabIndex = 5;
+            this.picCover.TabStop = false;
+            // 
             // frmAuthorDetail
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(416, 413);
+            this.ClientSize = new System.Drawing.Size(415, 515);
+            this.Controls.Add(this.myPanel1);
+            this.Controls.Add(this.btnCancel);
+            this.Controls.Add(this.btnSave);
             this.Controls.Add(this.btnBrowser);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.picCover);
             this.Controls.Add(this.txtTitle);
-            this.Controls.Add(this.btnSave);
-            this.Controls.Add(this.rtbDesription);
+            this.Controls.Add(this.rtbDescription);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Name = "frmAuthorDetail";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Author Detail";
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
+            this.myPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.picCover)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -144,13 +169,15 @@
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.RichTextBox rtbDesription;
-        private System.Windows.Forms.Button btnSave;
+        private System.Windows.Forms.RichTextBox rtbDescription;
         private System.Windows.Forms.TextBox txtTitle;
         private System.Windows.Forms.ErrorProvider errorProvider1;
-        private System.Windows.Forms.PictureBox picCover;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button btnBrowser;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
+        private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.Button btnSave;
+        private CustomControls.MyPanel myPanel1;
+        private System.Windows.Forms.PictureBox picCover;
     }
 }
