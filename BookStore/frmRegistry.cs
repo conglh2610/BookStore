@@ -108,21 +108,6 @@ namespace BookStore
             }
         }
 
-        private void txtLastName_Validating(object sender, CancelEventArgs e)
-        {
-            TextBox objTextBox = (TextBox)sender;
-
-            if (objTextBox.Text.Trim() == string.Empty)
-            {
-                errorProvider1.SetError(objTextBox, BookStoreConstants.MSG_REQUIRED_FIELD);
-                e.Cancel = true;
-            }
-            else
-            {
-                errorProvider1.SetError(objTextBox, null);
-            }
-        }
-
         private void txtEmail_Validating(object sender, CancelEventArgs e)
         {
 
