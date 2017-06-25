@@ -99,7 +99,14 @@ namespace BookStore
                     _book.Publisher = txtPublisher.Text;
                     _book.Year = Convert.ToInt32(txtYear.Text);
                     _book.AuthorId = Convert.ToInt32(cbxAuthor.SelectedValue);
-                    _book.CategoryId = Convert.ToInt32(cbxCategory.SelectedValue);
+                    if (string.IsNullOrEmpty(cbxCategory.Text))
+                    {
+                        _book.CategoryId = null;
+                    }
+                    else
+                    {
+                        _book.CategoryId = Convert.ToInt32(cbxCategory.SelectedValue);
+                    }
                     if (!string.IsNullOrEmpty(_orgFileName))
                     {
                         string authorPath = Path.GetDirectoryName(BookStoreConstants.BOOK_DIR_PATH);
@@ -119,7 +126,15 @@ namespace BookStore
                     newBook.Publisher = txtPublisher.Text;
                     newBook.Year = Convert.ToInt32(txtYear.Text);
                     newBook.AuthorId = Convert.ToInt32(cbxAuthor.SelectedValue);
-                    newBook.CategoryId = Convert.ToInt32(cbxCategory.SelectedValue);
+                    if (string.IsNullOrEmpty(cbxCategory.Text))
+                    {
+                        newBook.CategoryId = null;
+                    }
+                    else
+                    {
+                        newBook.CategoryId = Convert.ToInt32(cbxCategory.SelectedValue);
+                    }
+                    
                     if (!string.IsNullOrEmpty(_orgFileName))
                     {
                         string authorPath = Path.GetDirectoryName(BookStoreConstants.BOOK_DIR_PATH);
@@ -216,7 +231,7 @@ namespace BookStore
         {
             ComboBox objCbx = (ComboBox)sender;
 
-            if (Convert.ToInt32(objCbx.SelectedValue) == 0)
+            if (Convert.ToInt32(objCbx.SelectedValue) == 0 || string.IsNullOrEmpty(objCbx.Text))
             {
                 errorProvider1.SetError(objCbx, BookStoreConstants.MSG_REQUIRED_FIELD);
                 e.Cancel = true;
