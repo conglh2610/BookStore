@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BookStore.Services.Services
 {
-    public class AuthorService : Repository<Author>, IAuthorService
+    public class AuthorService : Repository<Author>, IAuthorService, IDisposable
     {
         BookStoreDB _dbContext = null;
         public AuthorService(BookStoreDB dbContext) : base(dbContext)
@@ -20,6 +20,11 @@ namespace BookStore.Services.Services
         public IEnumerable<Author> SearchAuthor(string strText)
         {
             return _dbContext.Author.Where(t => t.Title.Contains(strText) || t.Description.Contains(strText)).AsEnumerable();
+        }
+
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
         }
     }
 }

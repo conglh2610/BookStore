@@ -9,13 +9,15 @@ using System.Threading.Tasks;
 
 namespace BookStore.Services.Services
 {
-    public class BookService : Repository<Book>, IBookService
+    public class BookService : Repository<Book>, IBookService, IDisposable
     {
         BookStoreDB _dbContext = null;
         public BookService(BookStoreDB dbContext) : base(dbContext)
         {
             _dbContext = dbContext;
         }
+
+        
 
         public IEnumerable<Book> SearchBook(string strFilter, string strYear, int intAuthorId, int intCategoryId)
         {
@@ -27,6 +29,11 @@ namespace BookStore.Services.Services
                                             || t.AuthorId == intAuthorId)
                                     && (intCategoryId < 1
                                             || t.CategoryId == intCategoryId));
+        }
+
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
         }
     }
 }

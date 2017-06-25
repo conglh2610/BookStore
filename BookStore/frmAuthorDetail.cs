@@ -19,37 +19,43 @@ namespace BookStore
     {
 
         public AddItemDelegate AddUpdateItemCallback { get; internal set; }
-        private readonly AuthorService _authorService = null;
+        private AuthorService _authorService = null;
+        private BookStoreDB _db = null;
+        private User _user = null;
         private Author _updateAuthor = null;
         string _orgFileName = string.Empty;
-        public frmAuthorDetail()
+
+        public frmAuthorDetail(User user, Author authorUpdate)
         {
             InitializeComponent();
-        }
-        public frmAuthorDetail(AuthorService authorService)
-        {
-            InitializeComponent();            
-            _authorService = authorService;
-            picCover.SizeMode = PictureBoxSizeMode.StretchImage;
-            btnSave.Text = "Insert";
-        }
-
-        public frmAuthorDetail(AuthorService authorService, Author authorUpdate)
-        {
-            InitializeComponent();
-            this.FormBorderStyle = FormBorderStyle.FixedSingle;
-            _updateAuthor = authorUpdate;
-            this.btnSave.Text = "Update";
-            _authorService = authorService;
-            txtTitle.Text = authorUpdate.Title;
-            rtbDescription.Text = authorUpdate.Description;
-
-            picCover.SizeMode = PictureBoxSizeMode.StretchImage;
-            if (!string.IsNullOrEmpty(authorUpdate.Cover))
+            _db = new BookStoreDB();
+            _user = user;
+            _authorService = new AuthorService(_db);
+            if (authorUpdate != null && authorUpdate.Id > 0)
             {
-                picCover.Image = Image.FromFile(Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory())) + authorUpdate.Cover);
+                this.btnSave.Text = "Update";
+                _updateAuthor = authorUpdate;
+                txtTitle.Text = authorUpdate.Title;
+                rtbDescription.Text = authorUpdate.Description;
+                picCover.SizeMode = PictureBoxSizeMode.StretchImage;
+                if (!string.IsNullOrEmpty(authorUpdate.Cover))
+                {
+                    picCover.Image = Image.FromFile(Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory())) + authorUpdate.Cover);
+                }
+
+                if (user.Role.RoleType != BookStoreConstants.ADMIN_ROLE_TYPE)
+                {
+                    btnSave.Location = btnDelete.Location;
+                    btnDelete.Visible = false;
+                }
             }
-            
+
+            else
+            {
+                btnSave.Text = "Insert";
+                btnSave.Location = btnDelete.Location;
+                btnDelete.Visible = false;
+            }
         }
 
         protected override void OnFormClosing(FormClosingEventArgs e)
@@ -58,40 +64,44 @@ namespace BookStore
         }
         private void btnSave_Click(object sender, EventArgs e)
         {
-            if (_updateAuthor != null && _updateAuthor.Id > 0)
+            if (this.ValidateChildren(ValidationConstraints.Enabled))
             {
-                _updateAuthor = _authorService.GetById(_updateAuthor.Id);
-                _updateAuthor.Title = txtTitle.Text;
-                _updateAuthor.Description = rtbDescription.Text;
-                if (!string.IsNullOrEmpty(_orgFileName))
+                if (_updateAuthor != null && _updateAuthor.Id > 0)
                 {
-                    string authorPath = Path.GetDirectoryName(BookStoreConstants.AUTHOR_DIR_PATH);
-                    var filePath = String.Empty;
-                    FileHelpers.TryCopyFile(_orgFileName, BookStoreConstants.AUTHOR_DIR_PATH, out filePath);
-                    _updateAuthor.Cover = filePath;
+                    _updateAuthor = _authorService.GetById(_updateAuthor.Id);
+                    _updateAuthor.Title = txtTitle.Text;
+                    _updateAuthor.Description = rtbDescription.Text;
+                    if (!string.IsNullOrEmpty(_orgFileName))
+                    {
+                        string authorPath = Path.GetDirectoryName(BookStoreConstants.AUTHOR_DIR_PATH);
+                        var filePath = String.Empty;
+                        FileHelpers.TryCopyFile(_orgFileName, BookStoreConstants.AUTHOR_DIR_PATH, out filePath);
+                        _updateAuthor.Cover = filePath;
+                    }
+                    _updateAuthor.LastUpdateTime = DateTime.Now;
+                    _authorService.Update(_updateAuthor);
                 }
-                _updateAuthor.LastUpdateTime = DateTime.Now;
-                _authorService.Update(_updateAuthor);
-            }
 
-            else
-            {
-                var newAuthor = new Author();
-                newAuthor.Title = txtTitle.Text;
-                newAuthor.Description = rtbDescription.Text;
-                if (!string.IsNullOrEmpty(_orgFileName))
+                else
                 {
-                    string authorPath = Path.GetDirectoryName(BookStoreConstants.AUTHOR_DIR_PATH);
-                    var filePath = String.Empty;
-                    FileHelpers.TryCopyFile(_orgFileName, BookStoreConstants.AUTHOR_DIR_PATH, out filePath);
-                    newAuthor.Cover = filePath;
+                    var newAuthor = new Author();
+                    newAuthor.Title = txtTitle.Text;
+                    newAuthor.Description = rtbDescription.Text;
+                    if (!string.IsNullOrEmpty(_orgFileName))
+                    {
+                        string authorPath = Path.GetDirectoryName(BookStoreConstants.AUTHOR_DIR_PATH);
+                        var filePath = String.Empty;
+                        FileHelpers.TryCopyFile(_orgFileName, BookStoreConstants.AUTHOR_DIR_PATH, out filePath);
+                        newAuthor.Cover = filePath;
+                    }
+                    newAuthor.CreateTime = DateTime.Now;
+
+                    _authorService.Insert(newAuthor);
                 }
-                newAuthor.CreateTime = DateTime.Now;
 
-                _authorService.Insert(newAuthor);
+                this.Close();
             }
-
-            this.Close();
+            
         }
 
         private void txtTitle_Validating(object sender, CancelEventArgs e)
@@ -127,6 +137,24 @@ namespace BookStore
         private void btnCancel_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show(BookStoreConstants.MSG_CONFIRM_DELETE, BookStoreConstants.CONFIRM_DIALOG_NAME, MessageBoxButtons.YesNo);
+            if (result == DialogResult.Yes)
+            {
+                try
+                {
+                    _authorService.Delete(_updateAuthor.Id);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(BookStoreConstants.MSG_DB_ERROR + ex.Message);
+                }
+
+                this.Close();
+            }
         }
     }
 }

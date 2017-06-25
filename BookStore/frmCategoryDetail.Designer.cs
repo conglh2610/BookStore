@@ -36,6 +36,7 @@
             this.txtTitle = new System.Windows.Forms.TextBox();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.btnCancel = new System.Windows.Forms.Button();
+            this.btnDelete = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -67,7 +68,7 @@
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(215, 186);
+            this.btnSave.Location = new System.Drawing.Point(135, 186);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 23);
             this.btnSave.TabIndex = 3;
@@ -97,11 +98,22 @@
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
+            // btnDelete
+            // 
+            this.btnDelete.Location = new System.Drawing.Point(216, 186);
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(75, 23);
+            this.btnDelete.TabIndex = 5;
+            this.btnDelete.Text = "Delete";
+            this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
+            // 
             // frmCategoryDetail
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(420, 221);
+            this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.txtTitle);
             this.Controls.Add(this.btnSave);
@@ -127,5 +139,6 @@
         private System.Windows.Forms.TextBox txtTitle;
         private System.Windows.Forms.ErrorProvider errorProvider1;
         private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.Button btnDelete;
     }
 }

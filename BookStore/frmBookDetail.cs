@@ -22,7 +22,7 @@ namespace BookStore
 
         public Deletgates.AddItemDelegate AddUpdateItemCallback { get; internal set; }
 
-        public frmBookDetail(Book book)
+        public frmBookDetail(Book book, User user)
         {
             InitializeComponent();
             var db = new BookStoreDB();
@@ -65,56 +65,73 @@ namespace BookStore
                 {
                     picCover.Image = Image.FromFile(Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory())) + book.Cover);
                 }
+
+                btnSave.Text = "Update";
+                if (user.Role.RoleType != BookStoreConstants.ADMIN_ROLE_TYPE)
+                {
+                    btnSave.Location = btnDelete.Location;
+                    btnDelete.Visible = false;
+                }                
+            }
+
+            else
+            {
+                btnSave.Text = "Insert";
+                btnSave.Location = btnDelete.Location;
+                btnDelete.Visible = false;
             }
 
         }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            if (_book != null && _book.Id > 0)
+            if (this.ValidateChildren(ValidationConstraints.Enabled))
             {
-                _book = _bookService.GetById(_book.Id);
-                _book.Title = txtTitle.Text;
-                _book.Description = rtbDescription.Text;
-                _book.Publisher = txtPublisher.Text;
-                _book.Year = Convert.ToInt32(txtYear.Text);
-                _book.AuthorId = Convert.ToInt32(cbxAuthor.SelectedValue);
-                _book.CategoryId = Convert.ToInt32(cbxCategory.SelectedValue);
-                if (!string.IsNullOrEmpty(_orgFileName))
+                if (_book != null && _book.Id > 0)
                 {
-                    string authorPath = Path.GetDirectoryName(BookStoreConstants.BOOK_DIR_PATH);
-                    var filePath = String.Empty;
-                    FileHelpers.TryCopyFile(_orgFileName, BookStoreConstants.BOOK_DIR_PATH, out filePath);
-                    _book.Cover = filePath;
+                    _book = _bookService.GetById(_book.Id);
+                    _book.Title = txtTitle.Text;
+                    _book.Description = rtbDescription.Text;
+                    _book.Publisher = txtPublisher.Text;
+                    _book.Year = Convert.ToInt32(txtYear.Text);
+                    _book.AuthorId = Convert.ToInt32(cbxAuthor.SelectedValue);
+                    _book.CategoryId = Convert.ToInt32(cbxCategory.SelectedValue);
+                    if (!string.IsNullOrEmpty(_orgFileName))
+                    {
+                        string authorPath = Path.GetDirectoryName(BookStoreConstants.BOOK_DIR_PATH);
+                        var filePath = String.Empty;
+                        FileHelpers.TryCopyFile(_orgFileName, BookStoreConstants.BOOK_DIR_PATH, out filePath);
+                        _book.Cover = filePath;
+                    }
+                    _book.LastUpdateTime = DateTime.Now;
+                    _bookService.Update(_book);
                 }
-                _book.LastUpdateTime = DateTime.Now;
-                _bookService.Update(_book);
-            }
 
-            else
-            {
-                var newBook = new Book();
-                newBook.Title = txtTitle.Text;
-                newBook.Description = rtbDescription.Text;
-                newBook.Publisher = txtPublisher.Text;
-                newBook.Year = Convert.ToInt32(txtYear.Text);
-                newBook.AuthorId = Convert.ToInt32(cbxAuthor.SelectedValue);
-                newBook.CategoryId = Convert.ToInt32(cbxCategory.SelectedValue);
-                if (!string.IsNullOrEmpty(_orgFileName))
+                else
                 {
-                    string authorPath = Path.GetDirectoryName(BookStoreConstants.BOOK_DIR_PATH);
-                    var filePath = String.Empty;
-                    FileHelpers.TryCopyFile(_orgFileName, BookStoreConstants.BOOK_DIR_PATH, out filePath);
-                    newBook.Cover = filePath;
+                    var newBook = new Book();
+                    newBook.Title = txtTitle.Text;
+                    newBook.Description = rtbDescription.Text;
+                    newBook.Publisher = txtPublisher.Text;
+                    newBook.Year = Convert.ToInt32(txtYear.Text);
+                    newBook.AuthorId = Convert.ToInt32(cbxAuthor.SelectedValue);
+                    newBook.CategoryId = Convert.ToInt32(cbxCategory.SelectedValue);
+                    if (!string.IsNullOrEmpty(_orgFileName))
+                    {
+                        string authorPath = Path.GetDirectoryName(BookStoreConstants.BOOK_DIR_PATH);
+                        var filePath = String.Empty;
+                        FileHelpers.TryCopyFile(_orgFileName, BookStoreConstants.BOOK_DIR_PATH, out filePath);
+                        newBook.Cover = filePath;
+                    }
+                    newBook.CreateTime = DateTime.Now;
+
+                    _bookService.Insert(newBook);
+
                 }
-                newBook.CreateTime = DateTime.Now;
 
-                _bookService.Insert(newBook);
-
-                AddUpdateItemCallback("");
+                this.Close();
             }
-
-            this.Close();
+           
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -134,6 +151,105 @@ namespace BookStore
             {
                 picCover.Image = Image.FromFile(fd.FileName);
                 _orgFileName = fd.FileName;
+            }
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show(BookStoreConstants.MSG_CONFIRM_DELETE, BookStoreConstants.CONFIRM_DIALOG_NAME, MessageBoxButtons.YesNo);
+            if (result == DialogResult.Yes)
+            {
+                try
+                {
+                    _bookService.Delete(_book.Id);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(BookStoreConstants.MSG_DB_ERROR + ex.Message);
+                }
+
+                this.Close();
+            }
+
+        }
+
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            AddUpdateItemCallback("");
+        }
+
+        private void txtYear_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) &&
+                   (e.KeyChar != '.'))
+            {
+                e.Handled = true;
+            }
+
+            // only allow one decimal point
+            if ((e.KeyChar == '.') && ((sender as TextBox).Text.IndexOf('.') > -1))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void txtTitle_Validating(object sender, CancelEventArgs e)
+        {
+            TextBox objTextBox = (TextBox)sender;
+
+            if (objTextBox.Text.Trim() == string.Empty)
+            {
+                errorProvider1.SetError(objTextBox, BookStoreConstants.MSG_REQUIRED_FIELD);
+                e.Cancel = true;
+            }
+            else
+            {
+                errorProvider1.SetError(objTextBox, null);
+            }
+        }
+
+        private void cbxAuthor_Validating(object sender, CancelEventArgs e)
+        {
+            ComboBox objCbx = (ComboBox)sender;
+
+            if (Convert.ToInt32(objCbx.SelectedValue) == 0)
+            {
+                errorProvider1.SetError(objCbx, BookStoreConstants.MSG_REQUIRED_FIELD);
+                e.Cancel = true;
+            }
+            else
+            {
+                errorProvider1.SetError(objCbx, null);
+            }
+        }
+
+        private void txtPublisher_Validating(object sender, CancelEventArgs e)
+        {
+            TextBox objTextBox = (TextBox)sender;
+
+            if (objTextBox.Text.Trim() == string.Empty)
+            {
+                errorProvider1.SetError(objTextBox, BookStoreConstants.MSG_REQUIRED_FIELD);
+                e.Cancel = true;
+            }
+            else
+            {
+                errorProvider1.SetError(objTextBox, null);
+            }
+        }
+
+        private void txtYear_Validating(object sender, CancelEventArgs e)
+        {
+            TextBox objTextBox = (TextBox)sender;
+
+            if (objTextBox.Text.Trim() == string.Empty)
+            {
+                errorProvider1.SetError(objTextBox, BookStoreConstants.MSG_REQUIRED_FIELD);
+                e.Cancel = true;
+            }
+            else
+            {
+                errorProvider1.SetError(objTextBox, null);
             }
         }
     }

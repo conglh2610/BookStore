@@ -18,22 +18,19 @@ namespace BookStore
         #region Global Variables
 
         BookStoreDB _db = null;
+        User _user = null;
         AuthorService _authorService = null;
         DataGridView grvAuthor = null;
         #endregion
 
         #region Constructors
 
-        public frmAuthorMngt()
+        public frmAuthorMngt(User user) : base(user)
         {
             InitializeComponent();
-        }
-
-        public frmAuthorMngt(BookStoreDB db, User user) : base(db, user)
-        {
-            _db = db;
+            _db = new BookStoreDB();
+            _user = user;
             _authorService = new AuthorService(_db);
-            InitializeComponent();
             initGridView(user);
             SearchAuthor(txtFilter.Text);
         }
@@ -49,7 +46,7 @@ namespace BookStore
         /// <param name="e"></param>
         private void btnAddAuthor_Click(object sender, EventArgs e)
         {
-            var caregoryFrom = new frmAuthorDetail(_authorService);
+            var caregoryFrom = new frmAuthorDetail(_user, null);
             caregoryFrom.AddUpdateItemCallback = new AddItemDelegate(this.AddUpdateItemCallbackFn);
             caregoryFrom.ShowDialog();
         }
@@ -81,7 +78,7 @@ namespace BookStore
                 authorUpdate.Description = descriptionValue?.ToString() ?? string.Empty;
                 var coverValue = currentRow.Cells["Cover"].Value;
                 authorUpdate.Cover = coverValue?.ToString() ?? string.Empty;
-                var caregoryFrom = new frmAuthorDetail(_authorService, authorUpdate);
+                var caregoryFrom = new frmAuthorDetail(_user, authorUpdate);
                 caregoryFrom.AddUpdateItemCallback = new AddItemDelegate(this.AddUpdateItemCallbackFn);
                 caregoryFrom.ShowDialog();
 
@@ -89,11 +86,21 @@ namespace BookStore
 
             else if (e.ColumnIndex == grvAuthor.Columns["Delete"].Index && e.RowIndex >= 0)
             {
-                DialogResult result = MessageBox.Show(BookStoreConstants.MSG_CONFIRM_DELETE, BookStoreConstants.CONFIRM_DIALOG_NAME, MessageBoxButtons.OK);
-                if (result == DialogResult.OK)
+                DialogResult result = MessageBox.Show(BookStoreConstants.MSG_CONFIRM_DELETE, BookStoreConstants.CONFIRM_DIALOG_NAME, MessageBoxButtons.YesNo);
+                if (result == DialogResult.Yes)
                 {
-                    _authorService.Delete(Convert.ToInt32(grvAuthor.Rows[e.RowIndex].Cells["Id"].Value));
-                    SearchAuthor(txtFilter.Text);
+                    try
+                    {
+                        var authorDelete = _authorService.GetById(Convert.ToInt32(grvAuthor.Rows[e.RowIndex].Cells["Id"].Value));
+                        _authorService.Delete(authorDelete.Id);
+                        SearchAuthor(txtFilter.Text);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(BookStoreConstants.MSG_DB_ERROR + ex.Message);
+                        _authorService.Dispose();
+                    }
+                    
                 }
             }
         }
@@ -173,6 +180,7 @@ namespace BookStore
 
         private void AddUpdateItemCallbackFn(string item)
         {
+            _authorService = new AuthorService(new BookStoreDB());
             SearchAuthor(txtFilter.Text);
         }
 
@@ -180,7 +188,9 @@ namespace BookStore
 
         private void btnBack_Click(object sender, EventArgs e)
         {
-
+            var bookMngtForm = new frmBookMngt(_user);
+            bookMngtForm.Show();
+            this.Close();
         }
     }
 }

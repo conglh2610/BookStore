@@ -17,19 +17,18 @@ namespace BookStore
     {
         BookService _bookService = null;
         BookStoreDB _db = null;
-        public frmBookMngt()
+        User _user = null;
+        AddItemDelegate _addUpdateItemCallback = null;
+        public frmBookMngt(User user) : base(user)
         {
             InitializeComponent();
-        }
-        public frmBookMngt(BookStoreDB db, User user) : base(db, user)
-        {
-            InitializeComponent();
-            _db = db;
-
+            _db = new BookStoreDB();
+            _user = user;
             // init services 
-            var authorService = new AuthorService(db);
-            var categoryService = new CategoryService(db);
-            _bookService = new BookService(db);
+            var authorService = new AuthorService(_db);
+            var categoryService = new CategoryService(_db);
+            _bookService = new BookService(_db);
+            _addUpdateItemCallback = new AddItemDelegate(AddUpdateItemCallbackFn);
 
             // create empty value
             var emptyAuthor = new Author();
@@ -69,8 +68,8 @@ namespace BookStore
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            var bookDetailDialog = new frmBookDetail(null);
-            bookDetailDialog.AddUpdateItemCallback = new AddItemDelegate(this.AddUpdateItemCallbackFn);
+            var bookDetailDialog = new frmBookDetail(null, _user);
+            bookDetailDialog.AddUpdateItemCallback = _addUpdateItemCallback;
             bookDetailDialog.ShowDialog();
         }
 
@@ -88,7 +87,7 @@ namespace BookStore
             booksRepeater.Controls.Clear();
             for (int i = 0; i < totalRecords; i++)
             {
-                var bookItem = new BookItem(response[i]);
+                var bookItem = new BookItem(response[i], _user, _addUpdateItemCallback);
                 bookItem.Location = new Point((i % 5) * bookItem.Width, (i / 5) * bookItem.Height);
                 booksRepeater.Controls.Add(bookItem);
             }

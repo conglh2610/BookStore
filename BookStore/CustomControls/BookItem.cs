@@ -10,16 +10,22 @@ using System.Windows.Forms;
 using BookStore.Model.Generated;
 using BookStore.Services.Services;
 using System.IO;
+using static BookStore.Deletgates;
 
 namespace BookStore.CustomControls
 {
     public partial class BookItem : UserControl
     {
         Book _book = null;
-        public BookItem(Book book)
+        User _user = null;
+        public AddItemDelegate AddUpdateItemCallback { get; internal set; }
+        public BookItem(Book book, User user, AddItemDelegate adddUpdateItemCallback)
         {
             InitializeComponent();
+            _user = user;
             _book = book;
+            AddUpdateItemCallback = adddUpdateItemCallback;
+
             lblTitle.Text = book.Title;
             lblPublisher.Text = book.Publisher;
             lblYear.Text = book.Year.ToString();
@@ -36,8 +42,14 @@ namespace BookStore.CustomControls
         private void lblTitle_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             var db = new BookStoreDB();
-            var bookDetailDialog = new frmBookDetail(_book);
+            var bookDetailDialog = new frmBookDetail(_book, _user);
+            bookDetailDialog.AddUpdateItemCallback = new AddItemDelegate(AddUpdateItemCallbackFn);
             bookDetailDialog.ShowDialog();
+        }
+
+        private void AddUpdateItemCallbackFn(string strValue)
+        {
+            AddUpdateItemCallback("");
         }
     }
 }

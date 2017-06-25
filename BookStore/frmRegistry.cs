@@ -51,7 +51,7 @@ namespace BookStore
                 user.RoleId = new RoleService(_db).GetRoleIdByRoleType(BookStoreConstants.USER_ROLE_TYPE);
                 if (user.RoleId < 1)
                 {
-                    MessageBox.Show(BookStoreConstants.MSG_REGISTRY_ERROR);
+                    MessageBox.Show(BookStoreConstants.MSG_DB_ERROR);
                 }
                 else
                 {
@@ -70,7 +70,7 @@ namespace BookStore
             }
             catch (Exception)
             {
-                MessageBox.Show(BookStoreConstants.MSG_REGISTRY_ERROR);
+                MessageBox.Show(BookStoreConstants.MSG_DB_ERROR);
                 return;
             }
 

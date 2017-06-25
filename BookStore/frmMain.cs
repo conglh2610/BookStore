@@ -14,13 +14,11 @@ namespace BookStore
     public partial class frmMain : Form
     {
         private User _user;
-        private BookStoreDB _db;
         private CustomControls.UserInfo userInfo;
 
-        public frmMain(BookStoreDB db, User user)
+        public frmMain(User user)
         {
             _user = user;
-            _db = db;
             InitializeComponent();
             this.userInfo = new CustomControls.UserInfo(user);
             this.userInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -34,21 +32,21 @@ namespace BookStore
 
         private void tsmCategory_Click(object sender, EventArgs e)
         {
-            var categoryForm = new frmCategoryMngt(_db, _user);
+            var categoryForm = new frmCategoryMngt(_user);
             categoryForm.Show();
             this.Close();
         }
 
         private void tsmAuthor_Click(object sender, EventArgs e)
         {
-            var authorForm = new frmAuthorMngt(_db, _user);
+            var authorForm = new frmAuthorMngt(_user);
             authorForm.Show();
             this.Close();
         }
 
         private void tsmBook_Click(object sender, EventArgs e)
         {
-            var bookForm = new frmBookMngt(_db, _user);
+            var bookForm = new frmBookMngt(_user);
             bookForm.Show();
             this.Close();
         }

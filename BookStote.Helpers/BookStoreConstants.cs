@@ -26,7 +26,7 @@ namespace BookStote.Helpers
 
         public const string USER_ROLE_TYPE = "USER";
 
-        public const string MSG_REGISTRY_ERROR = "Error occurred while resgisy user.";
+        public const string MSG_DB_ERROR = "Error occurred while updating data.";
 
         public const string MSG_REGISTRY_SUCCESS = "Resigtry user sucessfully.";
 

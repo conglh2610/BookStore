@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace BookStore.Services.Services
 {
-    public class UserService : Repository<User>, IUserService
+    public class UserService : Repository<User>, IUserService, IDisposable
     {
         BookStoreDB _dbContext = null;
         public UserService(BookStoreDB dbContext) : base(dbContext)
@@ -40,6 +40,11 @@ namespace BookStore.Services.Services
         public User GetUserByEmail(string strEmail)
         {
             return _dbContext.User.FirstOrDefault(t => t.Email == strEmail);
+        }
+
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
         }
     }
 }

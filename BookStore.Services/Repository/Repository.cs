@@ -51,7 +51,7 @@ namespace BookStore.Services.Repository
             var entity = _dbContext.Set<T>().Find(id);
             if (entity != null)
             {
-                _dbContext.Set<T>().Remove(entity);
+                _dbContext.Entry(entity).State = EntityState.Deleted;
                 _dbContext.SaveChanges();
             }
            

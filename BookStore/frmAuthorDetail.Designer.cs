@@ -41,6 +41,7 @@
             this.btnSave = new System.Windows.Forms.Button();
             this.myPanel1 = new BookStore.CustomControls.MyPanel();
             this.picCover = new System.Windows.Forms.PictureBox();
+            this.btnDelete = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.myPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picCover)).BeginInit();
@@ -105,22 +106,24 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(272, 480);
+            this.btnCancel.Location = new System.Drawing.Point(291, 480);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(100, 23);
+            this.btnCancel.Size = new System.Drawing.Size(81, 23);
             this.btnCancel.TabIndex = 10;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // btnSave
             // 
             this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSave.Location = new System.Drawing.Point(169, 480);
+            this.btnSave.Location = new System.Drawing.Point(128, 480);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(97, 23);
+            this.btnSave.Size = new System.Drawing.Size(75, 23);
             this.btnSave.TabIndex = 9;
             this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // myPanel1
             // 
@@ -139,11 +142,23 @@
             this.picCover.TabIndex = 5;
             this.picCover.TabStop = false;
             // 
+            // btnDelete
+            // 
+            this.btnDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnDelete.Location = new System.Drawing.Point(210, 480);
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(75, 23);
+            this.btnDelete.TabIndex = 12;
+            this.btnDelete.Text = "Delete";
+            this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
+            // 
             // frmAuthorDetail
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(415, 515);
+            this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.myPanel1);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnSave);
@@ -179,5 +194,6 @@
         private System.Windows.Forms.Button btnSave;
         private CustomControls.MyPanel myPanel1;
         private System.Windows.Forms.PictureBox picCover;
+        private System.Windows.Forms.Button btnDelete;
     }
 }

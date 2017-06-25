@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BookStore.Services.Services
 {
-    public class RoleService : Repository<Role>, IRoleService
+    public class RoleService : Repository<Role>, IRoleService, IDisposable
     {
         BookStoreDB _dbContext = null;
         public RoleService(BookStoreDB dbContext) : base(dbContext)
@@ -31,6 +31,11 @@ namespace BookStore.Services.Services
                 response = role.Id;
             }
             return response;
+        }
+
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
         }
     }
 }

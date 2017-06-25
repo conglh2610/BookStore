@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.label1 = new System.Windows.Forms.Label();
             this.txtTitle = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -46,14 +47,17 @@
             this.myPanel1 = new BookStore.CustomControls.MyPanel();
             this.cbxCategory = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
+            this.btnDelete = new System.Windows.Forms.Button();
+            this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.picCover)).BeginInit();
             this.myPanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(42, 28);
+            this.label1.Location = new System.Drawing.Point(42, 25);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(30, 13);
             this.label1.TabIndex = 0;
@@ -65,11 +69,12 @@
             this.txtTitle.Name = "txtTitle";
             this.txtTitle.Size = new System.Drawing.Size(271, 20);
             this.txtTitle.TabIndex = 1;
+            this.txtTitle.Validating += new System.ComponentModel.CancelEventHandler(this.txtTitle_Validating);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(31, 54);
+            this.label2.Location = new System.Drawing.Point(31, 55);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(41, 13);
             this.label2.TabIndex = 0;
@@ -82,11 +87,12 @@
             this.cbxAuthor.Name = "cbxAuthor";
             this.cbxAuthor.Size = new System.Drawing.Size(271, 21);
             this.cbxAuthor.TabIndex = 2;
+            this.cbxAuthor.Validating += new System.ComponentModel.CancelEventHandler(this.cbxAuthor_Validating);
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(9, 123);
+            this.label3.Location = new System.Drawing.Point(12, 189);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(63, 13);
             this.label3.TabIndex = 3;
@@ -94,16 +100,16 @@
             // 
             // rtbDescription
             // 
-            this.rtbDescription.Location = new System.Drawing.Point(89, 120);
+            this.rtbDescription.Location = new System.Drawing.Point(86, 187);
             this.rtbDescription.Name = "rtbDescription";
             this.rtbDescription.Size = new System.Drawing.Size(271, 75);
-            this.rtbDescription.TabIndex = 3;
+            this.rtbDescription.TabIndex = 6;
             this.rtbDescription.Text = "";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(19, 212);
+            this.label4.Location = new System.Drawing.Point(19, 119);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(53, 13);
             this.label4.TabIndex = 0;
@@ -111,15 +117,16 @@
             // 
             // txtPublisher
             // 
-            this.txtPublisher.Location = new System.Drawing.Point(89, 210);
+            this.txtPublisher.Location = new System.Drawing.Point(89, 115);
             this.txtPublisher.Name = "txtPublisher";
             this.txtPublisher.Size = new System.Drawing.Size(271, 20);
             this.txtPublisher.TabIndex = 4;
+            this.txtPublisher.Validating += new System.ComponentModel.CancelEventHandler(this.txtPublisher_Validating);
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(40, 245);
+            this.label5.Location = new System.Drawing.Point(38, 86);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(32, 13);
             this.label5.TabIndex = 0;
@@ -127,15 +134,18 @@
             // 
             // txtYear
             // 
-            this.txtYear.Location = new System.Drawing.Point(89, 242);
+            this.txtYear.Location = new System.Drawing.Point(89, 83);
+            this.txtYear.MaxLength = 4;
             this.txtYear.Name = "txtYear";
             this.txtYear.Size = new System.Drawing.Size(271, 20);
             this.txtYear.TabIndex = 5;
+            this.txtYear.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtYear_KeyPress);
+            this.txtYear.Validating += new System.ComponentModel.CancelEventHandler(this.txtYear_Validating);
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(40, 276);
+            this.label6.Location = new System.Drawing.Point(32, 277);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(38, 13);
             this.label6.TabIndex = 5;
@@ -171,7 +181,7 @@
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(196, 559);
+            this.btnSave.Location = new System.Drawing.Point(112, 559);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(80, 23);
             this.btnSave.TabIndex = 9;
@@ -190,25 +200,42 @@
             // cbxCategory
             // 
             this.cbxCategory.FormattingEnabled = true;
-            this.cbxCategory.Location = new System.Drawing.Point(89, 85);
+            this.cbxCategory.Location = new System.Drawing.Point(89, 151);
             this.cbxCategory.Name = "cbxCategory";
             this.cbxCategory.Size = new System.Drawing.Size(271, 21);
-            this.cbxCategory.TabIndex = 13;
+            this.cbxCategory.TabIndex = 5;
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(31, 88);
+            this.label7.Location = new System.Drawing.Point(20, 155);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(49, 13);
+            this.label7.Size = new System.Drawing.Size(52, 13);
             this.label7.TabIndex = 12;
-            this.label7.Text = "Category";
+            this.label7.Text = "Category:";
+            // 
+            // btnDelete
+            // 
+            this.btnDelete.Location = new System.Drawing.Point(198, 559);
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(80, 23);
+            this.btnDelete.TabIndex = 14;
+            this.btnDelete.Text = "Delete";
+            this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
+            // 
+            // errorProvider1
+            // 
+            this.errorProvider1.ContainerControl = this;
             // 
             // frmBookDetail
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(382, 590);
+            this.Controls.Add(this.btnDelete);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.rtbDescription);
             this.Controls.Add(this.cbxCategory);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.myPanel1);
@@ -216,8 +243,6 @@
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.btnBrowser);
             this.Controls.Add(this.label6);
-            this.Controls.Add(this.rtbDescription);
-            this.Controls.Add(this.label3);
             this.Controls.Add(this.cbxAuthor);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.txtYear);
@@ -232,6 +257,7 @@
             this.Text = "Book Detail";
             ((System.ComponentModel.ISupportInitialize)(this.picCover)).EndInit();
             this.myPanel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -257,5 +283,7 @@
         private CustomControls.MyPanel myPanel1;
         private System.Windows.Forms.ComboBox cbxCategory;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Button btnDelete;
+        private System.Windows.Forms.ErrorProvider errorProvider1;
     }
 }

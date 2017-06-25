@@ -36,7 +36,7 @@ namespace BookStore
             if (user != null)
             {
                 lblErrorMessage.Text = String.Empty;
-                var bookForm = new frmBookMngt(_db, user);
+                var bookForm = new frmBookMngt( user);
                 bookForm.Show();
                 this.Hide();
             }

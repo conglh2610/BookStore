@@ -17,24 +17,35 @@ namespace BookStore
     public partial class frmCategoryDetail : Form
     {
         public AddItemDelegate AddUpdateItemCallback { get; internal set; }
-        private readonly CategoryService _categoryService = null;
-        private Category _updateCategory = null;
+        private CategoryService _categoryService = null;
+        private Category _categoryUpdate = null;
 
-        public frmCategoryDetail(CategoryService categoryService)
+        public frmCategoryDetail(User user, Category categoryUpdate)
         {
             InitializeComponent();
-            _categoryService = categoryService;
-            btnSave.Text = "Insert";
-        }
+            _categoryUpdate = categoryUpdate;
+            _categoryService = new CategoryService(new BookStoreDB());
+            if (categoryUpdate != null && categoryUpdate.Id > 0)
+            {
+                _categoryUpdate = categoryUpdate;
+                this.btnSave.Text = "Update";
+                txtTitle.Text = categoryUpdate.Title;
+                rtbDesription.Text = categoryUpdate.Description;
 
-        public frmCategoryDetail(CategoryService categoryService, Category categoryUpdate)
-        {
-            InitializeComponent();
-            _updateCategory = categoryUpdate;
-            this.btnSave.Text = "Update";
-            _categoryService = categoryService;
-            txtTitle.Text = categoryUpdate.Title;
-            rtbDesription.Text = categoryUpdate.Description;
+                if (user.Role.RoleType != BookStoreConstants.ADMIN_ROLE_TYPE)
+                {
+                    btnSave.Location = btnDelete.Location;
+                    btnDelete.Visible = false;
+                }
+            }
+
+            else
+            {
+                btnSave.Text = "Insert";
+                btnSave.Location = btnDelete.Location;
+                btnDelete.Visible = false;
+            }
+           
         }      
 
         protected override void OnFormClosing(FormClosingEventArgs e)
@@ -43,26 +54,30 @@ namespace BookStore
         }
         private void btnSave_Click(object sender, EventArgs e)
         {
-            if (_updateCategory != null && _updateCategory.Id > 0)
+            if (this.ValidateChildren(ValidationConstraints.Enabled))
             {
-                _updateCategory = _categoryService.GetById(_updateCategory.Id);
-                _updateCategory.Title = txtTitle.Text;
-                _updateCategory.Description = rtbDesription.Text;
-                _updateCategory.LastUpdateTime = DateTime.Now;
-                _categoryService.Update(_updateCategory);
-            }
+                if (_categoryUpdate != null && _categoryUpdate.Id > 0)
+                {
+                    _categoryUpdate = _categoryService.GetById(_categoryUpdate.Id);
+                    _categoryUpdate.Title = txtTitle.Text;
+                    _categoryUpdate.Description = rtbDesription.Text;
+                    _categoryUpdate.LastUpdateTime = DateTime.Now;
+                    _categoryService.Update(_categoryUpdate);
+                }
 
-            else
-            {
-                var newCategory = new Category();
-                newCategory.Title = txtTitle.Text;
-                newCategory.Description = rtbDesription.Text;
-                newCategory.CreateTime = DateTime.Now;
+                else
+                {
+                    var newCategory = new Category();
+                    newCategory.Title = txtTitle.Text;
+                    newCategory.Description = rtbDesription.Text;
+                    newCategory.CreateTime = DateTime.Now;
 
-                _categoryService.Insert(newCategory);
+                    _categoryService.Insert(newCategory);
+                }
+
+                this.Close();
             }
             
-            this.Close();
         }
 
         private void txtTitle_Validating(object sender, CancelEventArgs e)
@@ -83,6 +98,25 @@ namespace BookStore
         private void btnCancel_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show(BookStoreConstants.MSG_CONFIRM_DELETE, BookStoreConstants.CONFIRM_DIALOG_NAME, MessageBoxButtons.YesNo);
+            if (result == DialogResult.Yes)
+            {
+                try
+                {
+                    _categoryService.Delete(_categoryUpdate.Id);
+                    AddUpdateItemCallback("");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(BookStoreConstants.MSG_DB_ERROR + ex.Message);
+                }
+
+                this.Close();
+            }
         }
     }
 }
