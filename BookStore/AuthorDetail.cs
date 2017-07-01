@@ -41,10 +41,9 @@ namespace BookStore
                 rtbDescription.Text = author.Description;
 
                 // display cover photo
-                if (!string.IsNullOrEmpty(author.Cover))
+                if (!string.IsNullOrEmpty(author.Cover) && File.Exists(author.Cover.GetFullPath(BookStoreConstants.AUTHOR_DIR_PATH)))
                 {
-                    picCover.SizeMode = PictureBoxSizeMode.StretchImage;
-                    picCover.Image = Image.FromFile(Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory())) + author.Cover);
+                    picCover.Image = Image.FromFile(author.Cover.GetFullPath(BookStoreConstants.AUTHOR_DIR_PATH));
                 }
 
                 // check user role
@@ -85,7 +84,7 @@ namespace BookStore
                 // save cover photo
                 if (!string.IsNullOrEmpty(_orgFileName))
                 {
-                    var filePath = $"{Path.GetExtension(_orgFileName).ToLower()}";
+                    var filePath = $"{Guid.NewGuid()}{Path.GetExtension(_orgFileName).ToLower()}";
                     if (FileHelpers.TryCopyFile(_orgFileName, filePath.GetFullPath(BookStoreConstants.BOOK_DIR_PATH)))
                     {
                         _author.Cover = filePath;
@@ -139,8 +138,7 @@ namespace BookStore
         private void btnBrowser_Click(object sender, EventArgs e)
         {
             // Browser and display image.
-            OpenFileDialog fd = new OpenFileDialog();
-            fd.Filter = BookStoreConstants.IMAGE_FILETER;
+            OpenFileDialog fd = new OpenFileDialog { Filter = BookStoreConstants.IMAGE_FILETER };
             DialogResult dr = fd.ShowDialog();
 
             // get directory to save file

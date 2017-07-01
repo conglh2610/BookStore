@@ -17,8 +17,7 @@ namespace BookStore
     {
         #region Global Variables
 
-        BookStoreDB _db = null;
-        User _user = null;
+        readonly User _user = null;
         AuthorService _authorService = null;
         DataGridView grvAuthor = null;
         #endregion
@@ -32,9 +31,8 @@ namespace BookStore
         public AuthorManagement(User user) : base(user)
         {
             InitializeComponent();
-            _db = new BookStoreDB();
             _user = user;
-            _authorService = new AuthorService(_db);
+            _authorService = new AuthorService(new BookStoreDB());
             initGridView(user);
             SearchAuthor(txtFilter.Text);
         }

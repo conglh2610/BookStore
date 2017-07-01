@@ -49,9 +49,9 @@ namespace BookStore
                 cbxAuthor.SelectedValue = book.AuthorId;
                 cbxCategory.SelectedValue = book.CategoryId ?? 0;
 
-                if (!string.IsNullOrEmpty(book.Cover))
+                if (!string.IsNullOrEmpty(book.Cover) && File.Exists(book.Cover.GetFullPath(BookStoreConstants.BOOK_DIR_PATH)))
                 {
-                    picCover.Image = Image.FromFile(Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory())) + book.Cover);
+                    picCover.Image = Image.FromFile(book.Cover.GetFullPath(BookStoreConstants.BOOK_DIR_PATH));
                 }
 
                 btnSave.Text = "Update";
@@ -86,7 +86,7 @@ namespace BookStore
 
                 else
                 {
-                    _book = new Book {CreateTime = DateTime.Now};
+                    _book = new Book { CreateTime = DateTime.Now };
                 }
 
                 _book.Title = txtTitle.Text;
@@ -95,13 +95,16 @@ namespace BookStore
                 _book.Year = Convert.ToInt32(txtYear.Text);
                 _book.AuthorId = Convert.ToInt32(cbxAuthor.SelectedValue);
 
-                _book.CategoryId = string.IsNullOrEmpty(cbxCategory.Text) ? (int?) null : Convert.ToInt32(cbxCategory.SelectedValue);
+                _book.CategoryId = string.IsNullOrEmpty(cbxCategory.Text) ? (int?)null : Convert.ToInt32(cbxCategory.SelectedValue);
 
                 if (!string.IsNullOrEmpty(_orgFileName))
                 {
-                    var filePath = $"{Path.GetExtension(_orgFileName).ToLower()}";
+                    var filePath = $"{Guid.NewGuid()}{Path.GetExtension(_orgFileName).ToLower()}";
                     if (FileHelpers.TryCopyFile(_orgFileName, filePath.GetFullPath(BookStoreConstants.BOOK_DIR_PATH)))
                     {
+                        //GC.Collect();
+                        //GC.WaitForPendingFinalizers();
+                        //File.Delete(_book.Cover.GetFullPath(BookStoreConstants.BOOK_DIR_PATH));
                         _book.Cover = filePath;
                     }
 
@@ -239,15 +242,15 @@ namespace BookStore
 
         private void PopulateAuthors(AuthorService authorService)
         {
- 
+
             var authorsSource = authorService.Query();
-            authorsSource.Add(new Author {Id = 0, Title = String.Empty});
+            authorsSource.Add(new Author { Id = 0, Title = String.Empty });
             // get list from service and bind to datasource
 
             cbxAuthor.DataSource = authorsSource.OrderBy(t => t.Title).ToList();
             cbxAuthor.DisplayMember = "Title";
             cbxAuthor.ValueMember = "Id";
-           
+
         }
         private void PopulateCategories(CategoryService categoryService)
         {

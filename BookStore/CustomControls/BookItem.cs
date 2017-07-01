@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using BookStore.Model.Generated;
 using BookStore.Services.Services;
 using System.IO;
+using BookStote.Helpers;
 using static BookStore.Deletgates;
 
 namespace BookStore.CustomControls
@@ -47,9 +48,9 @@ namespace BookStore.CustomControls
             toolTip1.SetToolTip(lblDescription, book.Description);
 
             picCover.SizeMode = PictureBoxSizeMode.StretchImage;
-            if (!string.IsNullOrEmpty(book.Cover))
+            if (!string.IsNullOrEmpty(book.Cover) && File.Exists(book.Cover.GetFullPath(BookStoreConstants.BOOK_DIR_PATH)))
             {
-                picCover.Image = Image.FromFile(Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory())) + book.Cover);
+                picCover.Image = Image.FromFile(book.Cover.GetFullPath(BookStoreConstants.BOOK_DIR_PATH));
             }
 
         }

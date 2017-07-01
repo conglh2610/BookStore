@@ -16,11 +16,6 @@ namespace BookStore.Model.Generated
         [StringLength(250)]
         public string Cover { get; set; }
 
-        public string AbsCoverPath
-        {
-            get { return Cover; }
-        }
-
         [StringLength(250)]
         public string Description { get; set; }
 
