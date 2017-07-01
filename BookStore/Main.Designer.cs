@@ -28,109 +28,121 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.plnHeader = new System.Windows.Forms.TableLayoutPanel();
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmExit = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmCategory = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmAuthor = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmBook = new System.Windows.Forms.ToolStripMenuItem();
-            this.plnHeader.SuspendLayout();
-            this.menuStrip1.SuspendLayout();
+            this.components = new System.ComponentModel.Container();
+            this.toolStrip = new System.Windows.Forms.ToolStrip();
+            this.tsCategory = new System.Windows.Forms.ToolStripLabel();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsAuthor = new System.Windows.Forms.ToolStripLabel();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsBookManagement = new System.Windows.Forms.ToolStripLabel();
+            this.tsLogout = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.lblDisplayName = new System.Windows.Forms.ToolStripLabel();
+            this.toolStrip.SuspendLayout();
             this.SuspendLayout();
+    
             // 
-            // plnHeader
+            // toolStrip
             // 
-            this.plnHeader.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.plnHeader.ColumnCount = 2;
-            this.plnHeader.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 68F));
-            this.plnHeader.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 32F));
-            this.plnHeader.Controls.Add(this.menuStrip1, 0, 0);
-            this.plnHeader.Dock = System.Windows.Forms.DockStyle.Top;
-            this.plnHeader.Location = new System.Drawing.Point(0, 0);
-            this.plnHeader.Name = "plnHeader";
-            this.plnHeader.RowCount = 1;
-            this.plnHeader.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.plnHeader.Size = new System.Drawing.Size(486, 30);
-            this.plnHeader.TabIndex = 5;
+            this.toolStrip.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsCategory,
+            this.toolStripSeparator1,
+            this.tsAuthor,
+            this.toolStripSeparator2,
+            this.tsBookManagement,
+            this.tsLogout,
+            this.toolStripSeparator3,
+            this.lblDisplayName});
+            this.toolStrip.Location = new System.Drawing.Point(0, 0);
+            this.toolStrip.Name = "toolStrip";
+            this.toolStrip.Size = new System.Drawing.Size(785, 25);
+            this.toolStrip.TabIndex = 10;
+            this.toolStrip.Text = "toolStrip";
             // 
-            // menuStrip1
+            // tsCategory
             // 
-            this.menuStrip1.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileToolStripMenuItem,
-            this.tsmCategory,
-            this.tsmAuthor,
-            this.tsmBook});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(330, 24);
-            this.menuStrip1.TabIndex = 2;
-            this.menuStrip1.Text = "menuStrip1";
+            this.tsCategory.Name = "tsCategory";
+            this.tsCategory.Size = new System.Drawing.Size(129, 22);
+            this.tsCategory.Text = "Category Management";
+            this.tsCategory.Click += new System.EventHandler(this.tsCategory_Click);
             // 
-            // fileToolStripMenuItem
+            // toolStripSeparator1
             // 
-            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmExit});
-            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
-            this.fileToolStripMenuItem.Text = "File";
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
-            // tsmExit
+            // tsAuthor
             // 
-            this.tsmExit.Name = "tsmExit";
-            this.tsmExit.Size = new System.Drawing.Size(92, 22);
-            this.tsmExit.Text = "Exit";
-            this.tsmExit.Click += new System.EventHandler(this.tsmExit_Click);
+            this.tsAuthor.Name = "tsAuthor";
+            this.tsAuthor.Size = new System.Drawing.Size(118, 22);
+            this.tsAuthor.Text = "Author Management";
+            this.tsAuthor.Click += new System.EventHandler(this.tsAuthor_Click);
             // 
-            // tsmCategory
+            // toolStripSeparator2
             // 
-            this.tsmCategory.Name = "tsmCategory";
-            this.tsmCategory.Size = new System.Drawing.Size(121, 20);
-            this.tsmCategory.Text = "Manage Categories";
-            this.tsmCategory.Click += new System.EventHandler(this.tsmCategory_Click);
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
             // 
-            // tsmAuthor
+            // tsBookManagement
             // 
-            this.tsmAuthor.Name = "tsmAuthor";
-            this.tsmAuthor.Size = new System.Drawing.Size(107, 20);
-            this.tsmAuthor.Text = "Manage Authors";
-            this.tsmAuthor.Click += new System.EventHandler(this.tsmAuthor_Click);
+            this.tsBookManagement.Name = "tsBookManagement";
+            this.tsBookManagement.Size = new System.Drawing.Size(108, 22);
+            this.tsBookManagement.Text = "Book Management";
+            this.tsBookManagement.Click += new System.EventHandler(this.tsBookManagement_Click);
             // 
-            // tsmBook
+            // tsLogout
             // 
-            this.tsmBook.Name = "tsmBook";
-            this.tsmBook.Size = new System.Drawing.Size(97, 20);
-            this.tsmBook.Text = "Manage Books";
-            this.tsmBook.Click += new System.EventHandler(this.tsmBook_Click);
+            this.tsLogout.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.tsLogout.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsLogout.Image = global::BookStore.Properties.Resources.logout_24;
+            this.tsLogout.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsLogout.Name = "tsLogout";
+            this.tsLogout.Size = new System.Drawing.Size(23, 22);
+            this.tsLogout.Text = "Logout";
+            this.tsLogout.Click += new System.EventHandler(this.tsLogout_Click);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
+            // 
+            // lblDisplayName
+            // 
+            this.lblDisplayName.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.lblDisplayName.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblDisplayName.Name = "lblDisplayName";
+            this.lblDisplayName.Size = new System.Drawing.Size(102, 22);
+            this.lblDisplayName.Text = "Display Name";
             // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(486, 304);
-            this.Controls.Add(this.plnHeader);
+            this.ClientSize = new System.Drawing.Size(785, 302);
+            this.Controls.Add(this.toolStrip);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Main";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Main";
-            this.plnHeader.ResumeLayout(false);
-            this.plnHeader.PerformLayout();
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
+            this.toolStrip.ResumeLayout(false);
+            this.toolStrip.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
-        private System.Windows.Forms.TableLayoutPanel plnHeader;
-        private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem tsmExit;
-        private System.Windows.Forms.ToolStripMenuItem tsmCategory;
-        private System.Windows.Forms.ToolStripMenuItem tsmAuthor;
-        private System.Windows.Forms.ToolStripMenuItem tsmBook;
+        private System.Windows.Forms.ToolStrip toolStrip;
+        private System.Windows.Forms.ToolStripLabel tsCategory;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripLabel tsAuthor;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripLabel tsBookManagement;
+        private System.Windows.Forms.ToolStripLabel lblDisplayName;
+        private System.Windows.Forms.ToolStripButton tsLogout;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
     }
 }

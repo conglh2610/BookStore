@@ -126,7 +126,7 @@ namespace BookStore
                 {
                     MessageBox.Show(BookStoreConstants.MSG_DB_ERROR + ex.Message);
                 }
-
+                this.DialogResult = DialogResult.OK;
                 this.Close();
             }
         }

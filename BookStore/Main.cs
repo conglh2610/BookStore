@@ -20,43 +20,41 @@ namespace BookStore
 
         public Main(User user)
         {
-            _user = user;
-            
             InitializeComponent();
-
-            var userInfoControl = new UserInfo(user)
-            {
-                Anchor = AnchorStyles.Top |
-                         AnchorStyles.Right
-            };
-            this.plnHeader.Controls.Add(userInfoControl, 1, 0);
+            _user = user;
+            (this.toolStrip.Items.Find("lblDisplayName", true)[0]).Text = $@"{user.FirstName} {user.LastName}";
         }
         #endregion
 
         #region Events
-        private void tsmCategory_Click(object sender, EventArgs e)
+
+        private void tsCategory_Click(object sender, EventArgs e)
         {
             new CategoryManagement(_user).Show();
             this.Close();
         }
 
-        private void tsmAuthor_Click(object sender, EventArgs e)
+        private void tsLogout_Click(object sender, EventArgs e)
+        {
+            new Login().Show();
+            this.Close();
+        }
+
+        private void tsAuthor_Click(object sender, EventArgs e)
         {
             new AuthorManagement(_user).Show();
             this.Close();
         }
 
-        private void tsmBook_Click(object sender, EventArgs e)
+        private void tsBookManagement_Click(object sender, EventArgs e)
         {
             new BookManagement(_user).Show();
             this.Close();
         }
 
-        private void tsmExit_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
         #endregion
+
+       
     }
 }
 

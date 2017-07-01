@@ -1,13 +1,7 @@
 ﻿using BookStote.Helpers;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using BookStore.Model.Generated;
 using static BookStore.Deletgates;
@@ -18,8 +12,8 @@ namespace BookStore
     public partial class Registry : Form
     {
         #region Global Variables
-        private UserService _userService;
-        private BookStoreDB _db;
+        private readonly UserService _userService;
+        private readonly BookStoreDB _db;
         public UserResitryDelegate UserResitryCallback { get; internal set; }
         #endregion
 
@@ -49,11 +43,13 @@ namespace BookStore
             // validate before save data
             if (this.ValidateChildren(ValidationConstraints.Enabled))
             {
-                var user = new User();
-                user.FirstName = txtFirstName.Text;
-                user.LastName = txtLastName.Text;
-                user.Email = txtEmail.Text;
-                user.Password = txtPassword.Text.EncryptLoginPassword("SHA1");
+                var user = new User
+                {
+                    FirstName = txtFirstName.Text,
+                    LastName = txtLastName.Text,
+                    Email = txtEmail.Text,
+                    Password = txtPassword.Text.EncryptLoginPassword("SHA1")
+                };
 
                 try
                 {
