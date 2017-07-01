@@ -1,6 +1,6 @@
 ﻿namespace BookStore
 {
-    partial class frmRegistry
+    partial class Registry
     {
         /// <summary>
         /// Required designer variable.
@@ -155,7 +155,7 @@
             // 
             this.errorProvider1.ContainerControl = this;
             // 
-            // frmRegistry
+            // Registry
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -173,9 +173,11 @@
             this.Controls.Add(this.txtFirstName);
             this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
-            this.Name = "frmRegistry";
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.Name = "Registry";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "frmRegistry";
+            this.Text = "Registry User";
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

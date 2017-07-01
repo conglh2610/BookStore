@@ -2,49 +2,49 @@
 using BookStore.Services.Services;
 using BookStote.Helpers;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static BookStore.Deletgates;
 
 namespace BookStore
 {
-    public partial class frmAuthorDetail : Form
+    public partial class AuthorDetail : Form
     {
         #region Global Viarables
-        public AddItemDelegate AddUpdateItemCallback { get; internal set; }
-        private AuthorService _authorService = null;
-        private BookStoreDB _db = null;
-        private User _user = null;
-        private Author _updateAuthor = null;
-        string _orgFileName = string.Empty;
+        public Deletgates.AddItemDelegate AddUpdateItemCallback { get; internal set; }
+        private readonly AuthorService _authorService;
+        private Author _author;
+        string _orgFileName;
         #endregion
 
         #region Constructors
-        public frmAuthorDetail(User user, Author authorUpdate)
+
+        public AuthorDetail()
         {
             InitializeComponent();
-            _db = new BookStoreDB();
-            _user = user;
-            _authorService = new AuthorService(_db);
-            if (authorUpdate != null && authorUpdate.Id > 0)
+        }
+
+        public AuthorDetail(User user, Author author)
+        {
+            InitializeComponent();
+
+            _author = author;
+            _authorService = new AuthorService(new BookStoreDB());
+            _orgFileName = string.Empty;
+
+            if (author != null && author.Id > 0)
             {
                 this.btnSave.Text = "Update";
-                _updateAuthor = authorUpdate;
-                txtTitle.Text = authorUpdate.Title;
-                rtbDescription.Text = authorUpdate.Description;
+                _author = author;
+                txtTitle.Text = author.Title;
+                rtbDescription.Text = author.Description;
 
                 // display cover photo
-                if (!string.IsNullOrEmpty(authorUpdate.Cover))
+                if (!string.IsNullOrEmpty(author.Cover))
                 {
                     picCover.SizeMode = PictureBoxSizeMode.StretchImage;
-                    picCover.Image = Image.FromFile(Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory())) + authorUpdate.Cover);
+                    picCover.Image = Image.FromFile(Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory())) + author.Cover);
                 }
 
                 // check user role
@@ -72,47 +72,30 @@ namespace BookStore
             if (this.ValidateChildren(ValidationConstraints.Enabled))
             {
                 // for update mode
-                if (_updateAuthor != null && _updateAuthor.Id > 0)
+                if (_author != null && _author.Id > 0)
                 {
-                    _updateAuthor = _authorService.GetById(_updateAuthor.Id);
-                    _updateAuthor.Title = txtTitle.Text;
-                    _updateAuthor.Description = rtbDescription.Text;
-                    _updateAuthor.LastUpdateTime = DateTime.Now;
-
-                    // save cover photo
-                    if (!string.IsNullOrEmpty(_orgFileName))
-                    {
-                        string authorPath = Path.GetDirectoryName(BookStoreConstants.AUTHOR_DIR_PATH);
-                        var filePath = String.Empty;
-                        FileHelpers.TryCopyFile(_orgFileName, BookStoreConstants.AUTHOR_DIR_PATH, out filePath);
-                        _updateAuthor.Cover = filePath;
-                    }
-
-                    _authorService.Update(_updateAuthor);
+                    _author.LastUpdateTime = DateTime.Now;
                 }
-
                 else
                 {
-                    var newAuthor = new Author();
-                    newAuthor.Title = txtTitle.Text;
-                    newAuthor.Description = rtbDescription.Text;
-                    newAuthor.CreateTime = DateTime.Now;
+                    _author = new Author { CreateTime = DateTime.Now };
 
-                    // save cover photo
-                    if (!string.IsNullOrEmpty(_orgFileName))
-                    {
-                        string authorPath = Path.GetDirectoryName(BookStoreConstants.AUTHOR_DIR_PATH);
-                        var filePath = String.Empty;
-                        FileHelpers.TryCopyFile(_orgFileName, BookStoreConstants.AUTHOR_DIR_PATH, out filePath);
-                        newAuthor.Cover = filePath;
-                    }
-
-                    _authorService.Insert(newAuthor);
                 }
 
-                this.Close();
+                // save cover photo
+                if (!string.IsNullOrEmpty(_orgFileName))
+                {
+                    var filePath = $"{Path.GetExtension(_orgFileName).ToLower()}";
+                    if (FileHelpers.TryCopyFile(_orgFileName, filePath.GetFullPath(BookStoreConstants.BOOK_DIR_PATH)))
+                    {
+                        _author.Cover = filePath;
+                    }
+                }
+
+                _authorService.Upsert(_author);
             }
 
+            this.Close();
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
@@ -122,7 +105,7 @@ namespace BookStore
             {
                 try
                 {
-                    _authorService.Delete(_updateAuthor.Id);
+                    _authorService.Delete(_author.Id);
                 }
                 catch (Exception ex)
                 {

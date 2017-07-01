@@ -1,6 +1,6 @@
 ﻿namespace BookStore
 {
-    partial class frmBookMngt
+    partial class BookManagement
     {
         /// <summary>
         /// Required designer variable.
@@ -183,8 +183,9 @@
             this.label5.TabIndex = 9;
             this.label5.Text = "Total:";
             // 
-            // frmBookMngt
+            // BookManagement
             // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.ClientSize = new System.Drawing.Size(874, 524);
             this.Controls.Add(this.txtTotalRecords);
             this.Controls.Add(this.label5);
@@ -192,10 +193,16 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.myPanel1);
             this.Controls.Add(this.booksRepeater);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
-            this.Name = "frmBookMngt";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.Name = "BookManagement";
             this.Text = "Landing Page";
+            this.Controls.SetChildIndex(this.booksRepeater, 0);
+            this.Controls.SetChildIndex(this.myPanel1, 0);
+            this.Controls.SetChildIndex(this.label1, 0);
+            this.Controls.SetChildIndex(this.btnAdd, 0);
+            this.Controls.SetChildIndex(this.label5, 0);
+            this.Controls.SetChildIndex(this.txtTotalRecords, 0);
             this.myPanel1.ResumeLayout(false);
             this.myPanel1.PerformLayout();
             this.ResumeLayout(false);

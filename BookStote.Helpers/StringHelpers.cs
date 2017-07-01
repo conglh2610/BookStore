@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -9,7 +10,7 @@ namespace BookStote.Helpers
 {
     public static class StringHelpers
     {
-        public static string EncryptLoginPassword(string clearText, string passwordFormat)
+        public static string EncryptLoginPassword(this string clearText, string passwordFormat)
         {
             HashAlgorithm algorithm;
             if (clearText == null)
@@ -38,6 +39,15 @@ namespace BookStote.Helpers
             var encryptedPasswd = BitConverter.ToString(hashedPasswd).Replace("-", string.Empty);
 
             return encryptedPasswd;
+        }
+
+        public static string GetFullPath(this string cover, string subDir)
+        {
+#if DEBUG
+            return $"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}{subDir}{cover}";
+#else
+            return $"{Directory.GetCurrentDirectory()}{subDir}{cover}"; 
+#endif
         }
     }
 }

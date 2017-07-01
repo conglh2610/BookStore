@@ -1,6 +1,6 @@
 ﻿namespace BookStore
 {
-    partial class frmBookDetail
+    partial class BookDetail
     {
         /// <summary>
         /// Required designer variable.
@@ -228,7 +228,7 @@
             // 
             this.errorProvider1.ContainerControl = this;
             // 
-            // frmBookDetail
+            // BookDetail
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -252,7 +252,9 @@
             this.Controls.Add(this.txtTitle);
             this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
-            this.Name = "frmBookDetail";
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.Name = "BookDetail";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Book Detail";
             ((System.ComponentModel.ISupportInitialize)(this.picCover)).EndInit();

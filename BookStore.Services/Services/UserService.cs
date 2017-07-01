@@ -1,18 +1,14 @@
-﻿using BookStore.Model;
-using BookStore.Model.Generated;
+﻿using BookStore.Model.Generated;
 using BookStore.Services.Repository;
 using BookStote.Helpers;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BookStore.Services.Services
 {
     public class UserService : Repository<User>, IUserService, IDisposable
     {
-        BookStoreDB _dbContext = null;
+        readonly BookStoreDB _dbContext;
         public UserService(BookStoreDB dbContext) : base(dbContext)
         {
             _dbContext = dbContext;
@@ -28,7 +24,7 @@ namespace BookStore.Services.Services
         /// </returns>
         public User GetLogin(string strEmail, string strPassword)
         {
-            var pwHashed = StringHelpers.EncryptLoginPassword(strPassword, "SHA1");
+            var pwHashed = strPassword.EncryptLoginPassword("SHA1");
             return _dbContext.User.FirstOrDefault(t => t.Email == strEmail && t.Password == pwHashed);
         }
 

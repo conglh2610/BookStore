@@ -1,6 +1,6 @@
 ﻿namespace BookStore
 {
-    partial class frmMain
+    partial class Main
     {
         /// <summary>
         /// Required designer variable.
@@ -35,7 +35,6 @@
             this.tsmCategory = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmAuthor = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmBook = new System.Windows.Forms.ToolStripMenuItem();
-            this.button1 = new System.Windows.Forms.Button();
             this.plnHeader.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -47,7 +46,6 @@
             this.plnHeader.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 68F));
             this.plnHeader.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 32F));
             this.plnHeader.Controls.Add(this.menuStrip1, 0, 0);
-            this.plnHeader.Controls.Add(this.button1, 1, 0);
             this.plnHeader.Dock = System.Windows.Forms.DockStyle.Top;
             this.plnHeader.Location = new System.Drawing.Point(0, 0);
             this.plnHeader.Name = "plnHeader";
@@ -106,26 +104,18 @@
             this.tsmBook.Text = "Manage Books";
             this.tsmBook.Click += new System.EventHandler(this.tsmBook_Click);
             // 
-            // button1
-            // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(408, 3);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 3;
-            this.button1.Text = "TEXXXXT";
-            this.button1.UseVisualStyleBackColor = true;
-            // 
-            // frmMain
+            // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(486, 304);
             this.Controls.Add(this.plnHeader);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
-            this.Name = "frmMain";
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.Name = "Main";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "frmMain";
+            this.Text = "Main";
             this.plnHeader.ResumeLayout(false);
             this.plnHeader.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
@@ -142,6 +132,5 @@
         private System.Windows.Forms.ToolStripMenuItem tsmCategory;
         private System.Windows.Forms.ToolStripMenuItem tsmAuthor;
         private System.Windows.Forms.ToolStripMenuItem tsmBook;
-        private System.Windows.Forms.Button button1;
     }
 }

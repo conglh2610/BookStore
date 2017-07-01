@@ -66,59 +66,59 @@
       <DependentUpon>UserInfo.cs</DependentUpon>
     </Compile>
     <Compile Include="Deletgates.cs" />
-    <Compile Include="frmAuthorDetail.cs">
+    <Compile Include="AuthorDetail.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmAuthorDetail.Designer.cs">
-      <DependentUpon>frmAuthorDetail.cs</DependentUpon>
+    <Compile Include="AuthorDetail.Designer.cs">
+      <DependentUpon>AuthorDetail.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmAuthorMngt.cs">
+    <Compile Include="AuthorManagement.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmAuthorMngt.Designer.cs">
-      <DependentUpon>frmAuthorMngt.cs</DependentUpon>
+    <Compile Include="AuthorManagement.Designer.cs">
+      <DependentUpon>AuthorManagement.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmBookDetail.cs">
+    <Compile Include="BookDetail.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmBookDetail.Designer.cs">
-      <DependentUpon>frmBookDetail.cs</DependentUpon>
+    <Compile Include="BookDetail.Designer.cs">
+      <DependentUpon>BookDetail.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmBookMngt.cs">
+    <Compile Include="BookManagement.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmBookMngt.Designer.cs">
-      <DependentUpon>frmBookMngt.cs</DependentUpon>
+    <Compile Include="BookManagement.Designer.cs">
+      <DependentUpon>BookManagement.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmCategoryDetail.cs">
+    <Compile Include="CategoryDetail.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmCategoryDetail.Designer.cs">
-      <DependentUpon>frmCategoryDetail.cs</DependentUpon>
+    <Compile Include="CategoryDetail.Designer.cs">
+      <DependentUpon>CategoryDetail.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmCategoryMngt.cs">
+    <Compile Include="CategoryManagement.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmCategoryMngt.Designer.cs">
-      <DependentUpon>frmCategoryMngt.cs</DependentUpon>
+    <Compile Include="CategoryManagement.Designer.cs">
+      <DependentUpon>CategoryManagement.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmLogin.cs">
+    <Compile Include="Login.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmLogin.Designer.cs">
-      <DependentUpon>frmLogin.cs</DependentUpon>
+    <Compile Include="Login.Designer.cs">
+      <DependentUpon>Login.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmMain.cs">
+    <Compile Include="Main.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmMain.Designer.cs">
-      <DependentUpon>frmMain.cs</DependentUpon>
+    <Compile Include="Main.Designer.cs">
+      <DependentUpon>Main.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmRegistry.cs">
+    <Compile Include="Registry.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmRegistry.Designer.cs">
-      <DependentUpon>frmRegistry.cs</DependentUpon>
+    <Compile Include="Registry.Designer.cs">
+      <DependentUpon>Registry.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -128,32 +128,32 @@
     <EmbeddedResource Include="CustomControls\UserInfo.resx">
       <DependentUpon>UserInfo.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmAuthorDetail.resx">
-      <DependentUpon>frmAuthorDetail.cs</DependentUpon>
+    <EmbeddedResource Include="AuthorDetail.resx">
+      <DependentUpon>AuthorDetail.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmAuthorMngt.resx">
-      <DependentUpon>frmAuthorMngt.cs</DependentUpon>
+    <EmbeddedResource Include="AuthorManagement.resx">
+      <DependentUpon>AuthorManagement.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmBookDetail.resx">
-      <DependentUpon>frmBookDetail.cs</DependentUpon>
+    <EmbeddedResource Include="BookDetail.resx">
+      <DependentUpon>BookDetail.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmBookMngt.resx">
-      <DependentUpon>frmBookMngt.cs</DependentUpon>
+    <EmbeddedResource Include="BookManagement.resx">
+      <DependentUpon>BookManagement.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmCategoryDetail.resx">
-      <DependentUpon>frmCategoryDetail.cs</DependentUpon>
+    <EmbeddedResource Include="CategoryDetail.resx">
+      <DependentUpon>CategoryDetail.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmCategoryMngt.resx">
-      <DependentUpon>frmCategoryMngt.cs</DependentUpon>
+    <EmbeddedResource Include="CategoryManagement.resx">
+      <DependentUpon>CategoryManagement.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmLogin.resx">
-      <DependentUpon>frmLogin.cs</DependentUpon>
+    <EmbeddedResource Include="Login.resx">
+      <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmMain.resx">
-      <DependentUpon>frmMain.cs</DependentUpon>
+    <EmbeddedResource Include="Main.resx">
+      <DependentUpon>Main.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmRegistry.resx">
-      <DependentUpon>frmRegistry.cs</DependentUpon>
+    <EmbeddedResource Include="Registry.resx">
+      <DependentUpon>Registry.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

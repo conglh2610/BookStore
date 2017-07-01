@@ -15,7 +15,7 @@ using BookStore.Services.Services;
 
 namespace BookStore
 {
-    public partial class frmRegistry : Form
+    public partial class Registry : Form
     {
         #region Global Variables
         private UserService _userService;
@@ -24,12 +24,12 @@ namespace BookStore
         #endregion
 
         #region Contructors
-        public frmRegistry()
+        public Registry()
         {
             InitializeComponent();
         }
 
-        public frmRegistry(BookStoreDB db)
+        public Registry(BookStoreDB db)
         {
             _db = db;
             _userService = new UserService(db);
@@ -53,7 +53,7 @@ namespace BookStore
                 user.FirstName = txtFirstName.Text;
                 user.LastName = txtLastName.Text;
                 user.Email = txtEmail.Text;
-                user.Password = StringHelpers.EncryptLoginPassword(txtPassword.Text, "SHA1");
+                user.Password = txtPassword.Text.EncryptLoginPassword("SHA1");
 
                 try
                 {
@@ -67,7 +67,7 @@ namespace BookStore
                         var userByEmail = _userService.GetUserByEmail(txtEmail.Text);
                         if (userByEmail == null)
                         {
-                            _userService.Insert(user);
+                            _userService.Upsert(user);
                         }
                         else
                         {

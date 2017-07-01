@@ -14,7 +14,7 @@ using static BookStore.Deletgates;
 
 namespace BookStore
 {
-    public partial class frmCategoryMngt : BookStore.frmMain
+    public partial class CategoryManagement : Main
     {
         #region Global Variables
 
@@ -25,7 +25,7 @@ namespace BookStore
         #endregion
 
         #region Constructors
-        public frmCategoryMngt(User user) : base(user)
+        public CategoryManagement(User user) : base(user)
         {
             _db = new BookStoreDB();
             _user = user;
@@ -46,7 +46,7 @@ namespace BookStore
         /// <param name="e"></param>
         private void btnAddCategory_Click(object sender, EventArgs e)
         {
-            var caregoryFrom = new frmCategoryDetail(_user, null);
+            var caregoryFrom = new CategoryDetail(_user, null);
             caregoryFrom.AddUpdateItemCallback = new AddItemDelegate(this.AddUpdateItemCallbackFn);
             caregoryFrom.ShowDialog();
         }
@@ -76,7 +76,7 @@ namespace BookStore
                 categoryUpdate.Title = currentRow.Cells["Title"].Value.ToString();
                 var descriptionValue = currentRow.Cells["Description"].Value;
                 categoryUpdate.Description = descriptionValue?.ToString() ?? string.Empty;
-                var caregoryFrom = new frmCategoryDetail(_user, categoryUpdate);
+                var caregoryFrom = new CategoryDetail(_user, categoryUpdate);
                 caregoryFrom.AddUpdateItemCallback = new AddItemDelegate(this.AddUpdateItemCallbackFn);
                 caregoryFrom.ShowDialog();
 
@@ -103,7 +103,7 @@ namespace BookStore
 
         private void btnBack_Click(object sender, EventArgs e)
         {
-            var bookMngtForm = new frmBookMngt(_user);
+            var bookMngtForm = new BookManagement(_user);
             bookMngtForm.Show();
             this.Close();
         }

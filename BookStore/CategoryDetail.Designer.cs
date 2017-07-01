@@ -1,6 +1,6 @@
 ﻿namespace BookStore
 {
-    partial class frmCategoryDetail
+    partial class CategoryDetail
     {
         /// <summary>
         /// Required designer variable.
@@ -108,7 +108,7 @@
             this.btnDelete.UseVisualStyleBackColor = true;
             this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
-            // frmCategoryDetail
+            // CategoryDetail
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -121,9 +121,11 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
-            this.Name = "frmCategoryDetail";
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.Name = "CategoryDetail";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "CategoryDetail";
+            this.Text = "Category Detail";
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

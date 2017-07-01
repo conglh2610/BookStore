@@ -2,43 +2,43 @@
 using BookStore.Services.Services;
 using BookStote.Helpers;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using static BookStore.Deletgates;
 
 namespace BookStore
 {
-    public partial class frmCategoryDetail : Form
+    public partial class CategoryDetail : Form
     {
         #region Global Variables
         public AddItemDelegate AddUpdateItemCallback { get; internal set; }
-        private CategoryService _categoryService = null;
-        private Category _categoryUpdate = null;
+        private readonly CategoryService _categoryService;
+        private Category _category;
 
         #endregion
 
         #region Constructors
-        public frmCategoryDetail(User user, Category categoryUpdate)
+
+        public CategoryDetail()
         {
             InitializeComponent();
-            _categoryUpdate = categoryUpdate;
+        }
+
+        public CategoryDetail(User user, Category category)
+        {
+            InitializeComponent();
+            _category = category;
             _categoryService = new CategoryService(new BookStoreDB());
-            if (categoryUpdate != null && categoryUpdate.Id > 0)
+            if (category != null && category.Id > 0)
             {
-                _categoryUpdate = categoryUpdate;
+                _category = category;
                 this.btnSave.Text = "Update";
-                txtTitle.Text = categoryUpdate.Title;
-                rtbDesription.Text = categoryUpdate.Description;
+                txtTitle.Text = category.Title;
+                rtbDesription.Text = category.Description;
 
                 if (user.Role.RoleType != BookStoreConstants.ADMIN_ROLE_TYPE)
                 {
-                    btnSave.Location = btnDelete.Location;
+                    this.btnSave.Location = btnDelete.Location;
                     btnDelete.Visible = false;
                 }
             }
@@ -59,24 +59,19 @@ namespace BookStore
         {
             if (this.ValidateChildren(ValidationConstraints.Enabled))
             {
-                if (_categoryUpdate != null && _categoryUpdate.Id > 0)
+                if (_category != null && _category.Id > 0)
                 {
-                    _categoryUpdate = _categoryService.GetById(_categoryUpdate.Id);
-                    _categoryUpdate.Title = txtTitle.Text;
-                    _categoryUpdate.Description = rtbDesription.Text;
-                    _categoryUpdate.LastUpdateTime = DateTime.Now;
-                    _categoryService.Update(_categoryUpdate);
+                    _category.LastUpdateTime = DateTime.Now;
                 }
-
                 else
                 {
-                    var newCategory = new Category();
-                    newCategory.Title = txtTitle.Text;
-                    newCategory.Description = rtbDesription.Text;
-                    newCategory.CreateTime = DateTime.Now;
-
-                    _categoryService.Insert(newCategory);
+                    _category = new Category { CreateTime = DateTime.Now };
                 }
+
+                _category.Title = txtTitle.Text;
+                _category.Description = rtbDesription.Text;
+
+                _categoryService.Upsert(_category);
 
                 this.Close();
             }
@@ -90,7 +85,7 @@ namespace BookStore
             {
                 try
                 {
-                    _categoryService.Delete(_categoryUpdate.Id);
+                    _categoryService.Delete(_category.Id);
                     AddUpdateItemCallback("");
                 }
                 catch (Exception ex)
@@ -121,7 +116,7 @@ namespace BookStore
                 errorProvider1.SetError(objTextBox, null);
             }
         }
-        
+
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
             AddUpdateItemCallback("");

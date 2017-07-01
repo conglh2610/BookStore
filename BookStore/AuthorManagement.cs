@@ -13,7 +13,7 @@ using static BookStore.Deletgates;
 
 namespace BookStore
 {
-    public partial class frmAuthorMngt : BookStore.frmMain
+    public partial class AuthorManagement : Main
     {
         #region Global Variables
 
@@ -24,8 +24,12 @@ namespace BookStore
         #endregion
 
         #region Constructors
+        public AuthorManagement() : base()
+        {
+            InitializeComponent();
+        }
 
-        public frmAuthorMngt(User user) : base(user)
+        public AuthorManagement(User user) : base(user)
         {
             InitializeComponent();
             _db = new BookStoreDB();
@@ -46,7 +50,7 @@ namespace BookStore
         /// <param name="e"></param>
         private void btnAddAuthor_Click(object sender, EventArgs e)
         {
-            var caregoryFrom = new frmAuthorDetail(_user, null);
+            var caregoryFrom = new AuthorDetail(_user, null);
             caregoryFrom.AddUpdateItemCallback = new AddItemDelegate(this.AddUpdateItemCallbackFn);
             caregoryFrom.ShowDialog();
         }
@@ -78,7 +82,7 @@ namespace BookStore
                 authorUpdate.Description = descriptionValue?.ToString() ?? string.Empty;
                 var coverValue = currentRow.Cells["Cover"].Value;
                 authorUpdate.Cover = coverValue?.ToString() ?? string.Empty;
-                var caregoryFrom = new frmAuthorDetail(_user, authorUpdate);
+                var caregoryFrom = new AuthorDetail(_user, authorUpdate);
                 caregoryFrom.AddUpdateItemCallback = new AddItemDelegate(this.AddUpdateItemCallbackFn);
                 caregoryFrom.ShowDialog();
 
@@ -107,7 +111,7 @@ namespace BookStore
 
         private void btnBack_Click(object sender, EventArgs e)
         {
-            var bookMngtForm = new frmBookMngt(_user);
+            var bookMngtForm = new BookManagement(_user);
             bookMngtForm.Show();
             this.Close();
         }

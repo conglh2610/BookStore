@@ -1,6 +1,6 @@
 ﻿namespace BookStore
 {
-    partial class frmLogin
+    partial class Login
     {
         /// <summary>
         /// Required designer variable.
@@ -108,7 +108,7 @@
             this.btnRegistry.UseVisualStyleBackColor = true;
             this.btnRegistry.Click += new System.EventHandler(this.btnRegistry_Click);
             // 
-            // frmLogin
+            // Login
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -120,7 +120,9 @@
             this.Controls.Add(this.txtUserName);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Name = "frmLogin";
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.Name = "Login";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Login Form";
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();

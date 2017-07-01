@@ -50,9 +50,9 @@
             this.lblDisplayName.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblDisplayName.Location = new System.Drawing.Point(26, 2);
             this.lblDisplayName.Name = "lblDisplayName";
-            this.lblDisplayName.Size = new System.Drawing.Size(41, 13);
+            this.lblDisplayName.Size = new System.Drawing.Size(63, 13);
             this.lblDisplayName.TabIndex = 1;
-            this.lblDisplayName.Text = "label1";
+            this.lblDisplayName.Text = "Full Name";
             // 
             // UserInfo
             // 

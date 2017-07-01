@@ -10,21 +10,22 @@ using System.Windows.Forms;
 using BookStore.Model.Generated;
 using BookStore.Services.Services;
 using System.IO;
+using BookStore.Services.Repository;
 using BookStote.Helpers;
 
 namespace BookStore
 {
-    public partial class frmBookDetail : Form
+    public partial class BookDetail : Form
     {
         #region Global Variables
-        private BookService _bookService;
+        private readonly BookService _bookService;
         private Book _book;
         string _orgFileName = string.Empty;
         public Deletgates.AddItemDelegate AddUpdateItemCallback { get; internal set; }
         #endregion
 
         #region Constructors
-        public frmBookDetail(Book book, User user)
+        public BookDetail(Book book, User user)
         {
             InitializeComponent();
             var db = new BookStoreDB();
@@ -34,25 +35,10 @@ namespace BookStore
             _bookService = new BookService(db);
 
             _book = book;
-            // get list from service and bind to datasource
-            cbxAuthor.DataSource = authorService.List().OrderBy(t => t.Title).ToList();
-            cbxAuthor.DisplayMember = "Title";
-            cbxAuthor.ValueMember = "Id";
 
-            // create empty value
-            var emptyCategory = new Category();
-            emptyCategory.Id = 0;
-            emptyCategory.Title = String.Empty;
-
-            // get list from service
-            var categoryDataSource = categoryService.List().ToList();
-            categoryDataSource.Add(emptyCategory);
-            categoryDataSource = categoryDataSource.OrderBy(t => t.Title).ToList();
-
-            // bind to datasource
-            cbxCategory.DataSource = categoryDataSource;
-            cbxCategory.DisplayMember = "Title";
-            cbxCategory.ValueMember = "Id";
+            // populate dropdownlists
+            PopulateAuthors(authorService);
+            PopulateCategories(categoryService);
 
             if (book != null)
             {
@@ -84,6 +70,7 @@ namespace BookStore
             }
 
         }
+
         #endregion
 
         #region Events
@@ -94,59 +81,33 @@ namespace BookStore
                 if (_book != null && _book.Id > 0)
                 {
                     _book = _bookService.GetById(_book.Id);
-                    _book.Title = txtTitle.Text;
-                    _book.Description = rtbDescription.Text;
-                    _book.Publisher = txtPublisher.Text;
-                    _book.Year = Convert.ToInt32(txtYear.Text);
-                    _book.AuthorId = Convert.ToInt32(cbxAuthor.SelectedValue);
-                    if (string.IsNullOrEmpty(cbxCategory.Text))
-                    {
-                        _book.CategoryId = null;
-                    }
-                    else
-                    {
-                        _book.CategoryId = Convert.ToInt32(cbxCategory.SelectedValue);
-                    }
-                    if (!string.IsNullOrEmpty(_orgFileName))
-                    {
-                        string authorPath = Path.GetDirectoryName(BookStoreConstants.BOOK_DIR_PATH);
-                        var filePath = String.Empty;
-                        FileHelpers.TryCopyFile(_orgFileName, BookStoreConstants.BOOK_DIR_PATH, out filePath);
-                        _book.Cover = filePath;
-                    }
                     _book.LastUpdateTime = DateTime.Now;
-                    _bookService.Update(_book);
                 }
 
                 else
                 {
-                    var newBook = new Book();
-                    newBook.Title = txtTitle.Text;
-                    newBook.Description = rtbDescription.Text;
-                    newBook.Publisher = txtPublisher.Text;
-                    newBook.Year = Convert.ToInt32(txtYear.Text);
-                    newBook.AuthorId = Convert.ToInt32(cbxAuthor.SelectedValue);
-                    if (string.IsNullOrEmpty(cbxCategory.Text))
-                    {
-                        newBook.CategoryId = null;
-                    }
-                    else
-                    {
-                        newBook.CategoryId = Convert.ToInt32(cbxCategory.SelectedValue);
-                    }
-                    
-                    if (!string.IsNullOrEmpty(_orgFileName))
-                    {
-                        string authorPath = Path.GetDirectoryName(BookStoreConstants.BOOK_DIR_PATH);
-                        var filePath = String.Empty;
-                        FileHelpers.TryCopyFile(_orgFileName, BookStoreConstants.BOOK_DIR_PATH, out filePath);
-                        newBook.Cover = filePath;
-                    }
-                    newBook.CreateTime = DateTime.Now;
+                    _book = new Book {CreateTime = DateTime.Now};
+                }
 
-                    _bookService.Insert(newBook);
+                _book.Title = txtTitle.Text;
+                _book.Description = rtbDescription.Text;
+                _book.Publisher = txtPublisher.Text;
+                _book.Year = Convert.ToInt32(txtYear.Text);
+                _book.AuthorId = Convert.ToInt32(cbxAuthor.SelectedValue);
+
+                _book.CategoryId = string.IsNullOrEmpty(cbxCategory.Text) ? (int?) null : Convert.ToInt32(cbxCategory.SelectedValue);
+
+                if (!string.IsNullOrEmpty(_orgFileName))
+                {
+                    var filePath = $"{Path.GetExtension(_orgFileName).ToLower()}";
+                    if (FileHelpers.TryCopyFile(_orgFileName, filePath.GetFullPath(BookStoreConstants.BOOK_DIR_PATH)))
+                    {
+                        _book.Cover = filePath;
+                    }
 
                 }
+                _book.LastUpdateTime = DateTime.Now;
+                _bookService.Upsert(_book);
 
                 this.Close();
             }
@@ -271,6 +232,37 @@ namespace BookStore
                 errorProvider1.SetError(objTextBox, null);
             }
         }
+        #endregion
+
+        #region Private Methods
+
+
+        private void PopulateAuthors(AuthorService authorService)
+        {
+ 
+            var authorsSource = authorService.Query();
+            authorsSource.Add(new Author {Id = 0, Title = String.Empty});
+            // get list from service and bind to datasource
+
+            cbxAuthor.DataSource = authorsSource.OrderBy(t => t.Title).ToList();
+            cbxAuthor.DisplayMember = "Title";
+            cbxAuthor.ValueMember = "Id";
+           
+        }
+        private void PopulateCategories(CategoryService categoryService)
+        {
+
+            var categoriesDataSource = categoryService.Query();
+            categoriesDataSource.Add(new Category { Id = 0, Title = String.Empty });
+
+            // get list from service and bind to datasource
+            cbxCategory.DataSource = categoriesDataSource.OrderBy(t => t.Title).ToList();
+            cbxCategory.DisplayMember = "Title";
+            cbxCategory.ValueMember = "Id";
+
+        }
+
+
         #endregion
 
     }

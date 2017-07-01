@@ -22,39 +22,42 @@ namespace BookStore.Services.Repository
             return _dbContext.Set<T>().Find(id);
         }
 
-        public virtual IEnumerable<T> List()
+        public virtual IList<T> Query()
         {
-            return _dbContext.Set<T>().AsEnumerable();
+            return _dbContext.Set<T>().ToList();
         }
 
-        public virtual IEnumerable<T> List(System.Linq.Expressions.Expression<Func<T, bool>> predicate)
+        public virtual IList<T> Filter(Func<T, bool> predicate)
         {
             return _dbContext.Set<T>()
                    .Where(predicate)
-                   .AsEnumerable();
+                   .ToList();
         }
 
-        public void Insert(T entity)
+        public bool Upsert(T entity)
         {
+            if (entity.Id > 0)
+            {
+                // for updateing
+                _dbContext.Entry(entity).State = EntityState.Modified;
+               return _dbContext.SaveChanges() > 0;
+            }
+            // for inserting
             _dbContext.Set<T>().Add(entity);
-            _dbContext.SaveChanges();
+            return _dbContext.SaveChanges() > 0;
         }
 
-        public void Update(T entity)
-        {
-            _dbContext.Entry(entity).State = EntityState.Modified;
-            _dbContext.SaveChanges();
-        }
-
-        public void Delete(int id)
+        public bool Delete(int id)
         {
             var entity = _dbContext.Set<T>().Find(id);
             if (entity != null)
             {
                 _dbContext.Entry(entity).State = EntityState.Deleted;
-                _dbContext.SaveChanges();
+                return _dbContext.SaveChanges() > 0;
             }
-           
+
+            return false;
+
         }
 
     }

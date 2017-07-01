@@ -13,7 +13,7 @@ using static BookStore.Deletgates;
 
 namespace BookStore
 {
-    public partial class frmBookMngt : frmMain
+    public partial class BookManagement : Main
     {
         #region Global Variables
         BookService _bookService = null;
@@ -23,7 +23,7 @@ namespace BookStore
         #endregion
 
         #region Constructors
-        public frmBookMngt(User user) : base(user)
+        public BookManagement(User user) : base(user)
         {
             InitializeComponent();
             _db = new BookStoreDB();
@@ -40,7 +40,7 @@ namespace BookStore
             emptyAuthor.Title = "-- All Authors--";
 
             // get list from service
-            var authorDataSource = authorService.List().ToList();
+            var authorDataSource = authorService.Query();
             authorDataSource.Add(emptyAuthor);
             authorDataSource = authorDataSource.OrderBy(t => t.Title).ToList();
 
@@ -56,7 +56,7 @@ namespace BookStore
             emptyCategory.Title = "--All Categories--";
 
             // get list from service
-            var categoryDataSource = categoryService.List().ToList();
+            var categoryDataSource = categoryService.Query();
             categoryDataSource.Add(emptyCategory);
             categoryDataSource = categoryDataSource.OrderBy(t => t.Title).ToList();
 
@@ -74,7 +74,7 @@ namespace BookStore
         #region Events
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            var bookDetailDialog = new frmBookDetail(null, _user);
+            var bookDetailDialog = new BookDetail(null, _user);
             bookDetailDialog.AddUpdateItemCallback = _addUpdateItemCallback;
             bookDetailDialog.ShowDialog();
         }

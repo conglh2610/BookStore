@@ -13,7 +13,7 @@ using System.Windows.Forms;
 
 namespace BookStore
 {
-    public partial class frmLogin : Form
+    public partial class Login : Form
     {
         #region Global Viarables
         UserService _userService = null;
@@ -21,7 +21,7 @@ namespace BookStore
         #endregion
 
         #region Constructors
-        public frmLogin()
+        public Login()
         {
             InitializeComponent();
             _db = new BookStoreDB();
@@ -42,7 +42,7 @@ namespace BookStore
             if (user != null)
             {
                 lblErrorMessage.Text = String.Empty;
-                var bookForm = new frmBookMngt(user);
+                var bookForm = new BookManagement(user);
                 bookForm.Show();
                 this.Hide();
             }
@@ -85,7 +85,7 @@ namespace BookStore
 
         private void btnRegistry_Click(object sender, EventArgs e)
         {
-            var registryForm = new frmRegistry(_db);
+            var registryForm = new Registry(_db);
             registryForm.UserResitryCallback = new Deletgates.UserResitryDelegate(UserResitryFn);
             registryForm.ShowDialog();
         }

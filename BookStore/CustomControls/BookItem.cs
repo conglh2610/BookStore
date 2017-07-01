@@ -23,6 +23,11 @@ namespace BookStore.CustomControls
         #endregion
 
         #region Constructors
+
+        public BookItem()
+        {
+            InitializeComponent();
+        }
         public BookItem(Book book, User user, AddItemDelegate adddUpdateItemCallback)
         {
             InitializeComponent();
@@ -53,9 +58,8 @@ namespace BookStore.CustomControls
         #region Events
         private void lblTitle_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            var db = new BookStoreDB();
-            var bookDetailDialog = new frmBookDetail(_book, _user);
-            bookDetailDialog.AddUpdateItemCallback = new AddItemDelegate(AddUpdateItemCallbackFn);
+            var bookDetailDialog =
+                new BookDetail(_book, _user) { AddUpdateItemCallback = AddUpdateItemCallbackFn };
             bookDetailDialog.ShowDialog();
         }
         #endregion

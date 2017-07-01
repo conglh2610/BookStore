@@ -21,14 +21,14 @@ namespace BookStore.CustomControls
         public UserInfo(User user)
         {
             InitializeComponent();
-            lblDisplayName.Text = String.Format("{0} {1}", user.FirstName, user.LastName);
+            lblDisplayName.Text = $@"{user.FirstName} {user.LastName}";
         }
         #endregion
 
         #region Events
         private void btnLogout_Click(object sender, EventArgs e)
         {
-            var loginForm = new frmLogin();
+            var loginForm = new Login();
             var parentForm = this.FindForm();
             parentForm.Close();
             loginForm.Show();
