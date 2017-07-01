@@ -12,6 +12,7 @@ namespace BookStore
     {
         #region Global Variables
         readonly User _user;
+        readonly BookStoreDB _db;
         BookService _bookService;
         #endregion
 
@@ -21,6 +22,7 @@ namespace BookStore
             InitializeComponent();
             var db = new BookStoreDB();
             _user = user;
+            _db = db;
             _bookService = new BookService(db);
             // init services 
             var authorService = new AuthorService(db);
@@ -66,7 +68,7 @@ namespace BookStore
         #region Events
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            using (var bookDetailDialog = new BookDetail(null, _user))
+            using (var bookDetailDialog = new BookDetail(null, _user, _db))
             {
                 DialogResult dr = bookDetailDialog.ShowDialog();
                 if (dr == DialogResult.OK)
@@ -92,7 +94,7 @@ namespace BookStore
             booksRepeater.Controls.Clear();
             for (int i = 0; i < totalRecords; i++)
             {
-                var bookItem = new BookItem(response[i], _user, SearchBookCallBackFn);
+                var bookItem = new BookItem(response[i].Id, _user, SearchBookCallBackFn);
                 bookItem.Location = new Point((i % 5) * bookItem.Width, (i / 5) * bookItem.Height);
                 booksRepeater.Controls.Add(bookItem);
             }

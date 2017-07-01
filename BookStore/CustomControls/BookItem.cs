@@ -5,6 +5,7 @@ using System.IO;
 using BookStote.Helpers;
 using static BookStore.Deletgates;
 using System;
+using BookStore.Services.Services;
 
 namespace BookStore.CustomControls
 {
@@ -14,6 +15,7 @@ namespace BookStore.CustomControls
 
         readonly Book _book;
         readonly User _user;
+        private readonly BookStoreDB _db;
         public AddUpdateItemDelegate AddUpdateItemCallback { get; internal set; }
         #endregion
 
@@ -23,28 +25,30 @@ namespace BookStore.CustomControls
         {
             InitializeComponent();
         }
-        public BookItem(Book book, User user, AddUpdateItemDelegate adddUpdateItemCallback)
+        public BookItem(int bookId, User user, AddUpdateItemDelegate adddUpdateItemCallback)
         {
             InitializeComponent();
             _user = user;
-            _book = book;
+            _db = new BookStoreDB();
+            var bookService = new BookService(_db);
+            _book = bookService.GetById(bookId);
             AddUpdateItemCallback = adddUpdateItemCallback;
 
-            lblTitle.Text = book.Title;
-            lblPublisher.Text = book.Publisher;
-            lblYear.Text = book.Year.ToString();
-            lblAuthor.Text = book.Author?.Title ?? String.Empty;
-            lblDescription.Text = book.Description;
+            lblTitle.Text = _book.Title;
+            lblPublisher.Text = _book.Publisher;
+            lblYear.Text = _book.Year.ToString();
+            lblAuthor.Text = _book.Author?.Title ?? String.Empty;
+            lblDescription.Text = _book.Description;
 
-            toolTip1.SetToolTip(lblTitle, book.Title);
-            toolTip1.SetToolTip(lblPublisher, book.Publisher);
-            toolTip1.SetToolTip(lblYear, book.Year.ToString());
-            toolTip1.SetToolTip(lblDescription, book.Description);
+            toolTip1.SetToolTip(lblTitle, _book.Title);
+            toolTip1.SetToolTip(lblPublisher, _book.Publisher);
+            toolTip1.SetToolTip(lblYear, _book.Year.ToString());
+            toolTip1.SetToolTip(lblDescription, _book.Description);
 
             picCover.SizeMode = PictureBoxSizeMode.StretchImage;
-            if (!string.IsNullOrEmpty(book.Cover) && File.Exists(book.Cover.GetFullPath(BookStoreConstants.BOOK_DIR_PATH)))
+            if (!string.IsNullOrEmpty(_book.Cover) && File.Exists(_book.Cover.GetFullPath(BookStoreConstants.BOOK_DIR_PATH)))
             {
-                picCover.Image = Image.FromFile(book.Cover.GetFullPath(BookStoreConstants.BOOK_DIR_PATH));
+                picCover.Image = Image.FromFile(_book.Cover.GetFullPath(BookStoreConstants.BOOK_DIR_PATH));
             }
 
         }
@@ -53,7 +57,7 @@ namespace BookStore.CustomControls
         #region Events
         private void lblTitle_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            using (var bookDetailDialog = new BookDetail(_book, _user))
+            using (var bookDetailDialog = new BookDetail(_book, _user, _db))
             {
                 DialogResult dr = bookDetailDialog.ShowDialog();
                 if (dr == DialogResult.OK)

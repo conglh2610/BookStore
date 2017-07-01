@@ -19,15 +19,13 @@ namespace BookStore
         #endregion
 
         #region Constructors
-        public BookDetail(Book book, User user)
+        public BookDetail(Book book, User user, BookStoreDB db)
         {
             InitializeComponent();
-            var db = new BookStoreDB();
             // init services 
             var authorService = new AuthorService(db);
             var categoryService = new CategoryService(db);
             _bookService = new BookService(db);
-
             _book = book;
 
             // populate dropdownlists
@@ -96,9 +94,6 @@ namespace BookStore
                     var filePath = $"{Guid.NewGuid()}{Path.GetExtension(_orgFileName).ToLower()}";
                     if (FileHelpers.TryCopyFile(_orgFileName, filePath.GetFullPath(BookStoreConstants.BOOK_DIR_PATH)))
                     {
-                        //GC.Collect();
-                        //GC.WaitForPendingFinalizers();
-                        //File.Delete(_book.Cover.GetFullPath(BookStoreConstants.BOOK_DIR_PATH));
                         _book.Cover = filePath;
                     }
 
@@ -125,6 +120,7 @@ namespace BookStore
                     MessageBox.Show(BookStoreConstants.MSG_DB_ERROR + ex.Message);
                 }
 
+                this.DialogResult = DialogResult.OK;
                 this.Close();
             }
 
