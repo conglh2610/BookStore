@@ -2,37 +2,29 @@
 using BookStore.Model.Generated;
 using BookStore.Services.Services;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using static BookStore.Deletgates;
 
 namespace BookStore
 {
     public partial class BookManagement : Main
     {
         #region Global Variables
-        BookService _bookService = null;
-        BookStoreDB _db = null;
-        User _user = null;
-        AddItemDelegate _addUpdateItemCallback = null;
+        readonly User _user;
+        BookService _bookService;
         #endregion
 
         #region Constructors
         public BookManagement(User user) : base(user)
         {
             InitializeComponent();
-            _db = new BookStoreDB();
+            var db = new BookStoreDB();
             _user = user;
+            _bookService = new BookService(db);
             // init services 
-            var authorService = new AuthorService(_db);
-            var categoryService = new CategoryService(_db);
-            _bookService = new BookService(_db);
-            _addUpdateItemCallback = new AddItemDelegate(AddUpdateItemCallbackFn);
+            var authorService = new AuthorService(db);
+            var categoryService = new CategoryService(db);
 
             // create empty value
             var emptyAuthor = new Author();
@@ -74,9 +66,14 @@ namespace BookStore
         #region Events
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            var bookDetailDialog = new BookDetail(null, _user);
-            bookDetailDialog.AddUpdateItemCallback = _addUpdateItemCallback;
-            bookDetailDialog.ShowDialog();
+            using (var bookDetailDialog = new BookDetail(null, _user))
+            {
+                DialogResult dr = bookDetailDialog.ShowDialog();
+                if (dr == DialogResult.OK)
+                {
+                    SearchBook();
+                }
+            }
         }
 
         private void btnSearch_Click(object sender, EventArgs e)
@@ -95,17 +92,18 @@ namespace BookStore
             booksRepeater.Controls.Clear();
             for (int i = 0; i < totalRecords; i++)
             {
-                var bookItem = new BookItem(response[i], _user, _addUpdateItemCallback);
+                var bookItem = new BookItem(response[i], _user, SearchBookCallBackFn);
                 bookItem.Location = new Point((i % 5) * bookItem.Width, (i / 5) * bookItem.Height);
                 booksRepeater.Controls.Add(bookItem);
             }
-
         }
-        private void AddUpdateItemCallbackFn(string strValue)
+
+        private void SearchBookCallBackFn()
         {
             _bookService = new BookService(new BookStoreDB());
             SearchBook();
         }
+
         #endregion
     }
 }

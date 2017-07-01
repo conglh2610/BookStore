@@ -1,16 +1,10 @@
-﻿using BookStore.CustomControls;
-using BookStore.Model.Generated;
+﻿using BookStore.Model.Generated;
 using BookStore.Services.Services;
 using BookStote.Helpers;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using static BookStore.Deletgates;
 
 namespace BookStore
 {
@@ -18,134 +12,127 @@ namespace BookStore
     {
         #region Global Variables
 
-        BookStoreDB _db = null;
-        User _user = null;
-        CategoryService _caregoryService = null;
-        DataGridView grvCategory = null;
+        readonly User _user;
+        CategoryService _caregoryService;
         #endregion
 
         #region Constructors
         public CategoryManagement(User user) : base(user)
         {
-            _db = new BookStoreDB();
             _user = user;
-            _caregoryService = new CategoryService(_db);
+            _caregoryService = new CategoryService(new BookStoreDB());
             InitializeComponent();
-            initGridView(user);
+            InitGridView(user);
             SearchCategory(txtFilter.Text);
         }
-
         #endregion
 
         #region Events
-
-        /// <summary>
-        /// On Button Add Category Clicked
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void btnAddCategory_Click(object sender, EventArgs e)
         {
-            var caregoryFrom = new CategoryDetail(_user, null);
-            caregoryFrom.AddUpdateItemCallback = new AddItemDelegate(this.AddUpdateItemCallbackFn);
-            caregoryFrom.ShowDialog();
+            using (var caregoryFrom = new CategoryDetail(_user, null, _caregoryService))
+            {
+                var dr = caregoryFrom.ShowDialog();
+                if (dr == DialogResult.OK)
+                {
+                    SearchCategory(txtFilter.Text);
+                }
+            }
         }
-
-        /// <summary>
-        /// On the filter textbox changed
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void txtFilter_TextChanged(object sender, EventArgs e)
         {
             SearchCategory(txtFilter.Text);
         }
-
-        /// <summary>
-        /// Handle clicking on row Edit or row Delete
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void grvCategory_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.ColumnIndex == grvCategory.Columns["Edit"].Index && e.RowIndex >= 0)
+            if (e.RowIndex < 0)
             {
-                var currentRow = grvCategory.Rows[e.RowIndex];
-                Category categoryUpdate = new Category();
-                categoryUpdate.Id = Convert.ToInt32(currentRow.Cells["Id"].Value);
-                categoryUpdate.Title = currentRow.Cells["Title"].Value.ToString();
-                var descriptionValue = currentRow.Cells["Description"].Value;
-                categoryUpdate.Description = descriptionValue?.ToString() ?? string.Empty;
-                var caregoryFrom = new CategoryDetail(_user, categoryUpdate);
-                caregoryFrom.AddUpdateItemCallback = new AddItemDelegate(this.AddUpdateItemCallbackFn);
-                caregoryFrom.ShowDialog();
-
+                return;
             }
+            // get current Category
+            var category = _caregoryService.GetById(Convert.ToInt32(gridViewCategory.Rows[e.RowIndex].Cells["Id"].Value));
 
-            else if (e.ColumnIndex == grvCategory.Columns["Delete"].Index && e.RowIndex >= 0)
+            // for Editing
+            if (e.ColumnIndex == gridViewCategory.Columns["Edit"].Index)
             {
-                DialogResult result = MessageBox.Show(BookStoreConstants.MSG_CONFIRM_DELETE, BookStoreConstants.CONFIRM_DIALOG_NAME, MessageBoxButtons.YesNo);
-                if (result == DialogResult.Yes)
+                using (var categoryFrom = new CategoryDetail(_user, category, _caregoryService))
                 {
-                    try
+                    var dr = categoryFrom.ShowDialog();
+                    if (dr == DialogResult.OK)
                     {
-                        _caregoryService.Delete(Convert.ToInt32(grvCategory.Rows[e.RowIndex].Cells["Id"].Value));
+                        _caregoryService = new CategoryService(new BookStoreDB());
                         SearchCategory(txtFilter.Text);
                     }
-                    catch (Exception)
-                    {
-                        MessageBox.Show(BookStoreConstants.MSG_DB_ERROR);
-                    }
-
                 }
             }
-        }
 
-        private void btnBack_Click(object sender, EventArgs e)
-        {
-            var bookMngtForm = new BookManagement(_user);
-            bookMngtForm.Show();
-            this.Close();
+            // for Deleting
+            else
+            {
+                var deleteColumn = gridViewCategory.Columns["Delete"];
+                if (deleteColumn != null && e.ColumnIndex == deleteColumn.Index)
+                {
+                    DialogResult result = MessageBox.Show(BookStoreConstants.MSG_CONFIRM_DELETE, BookStoreConstants.CONFIRM_DIALOG_NAME, MessageBoxButtons.YesNo);
+                    if (result == DialogResult.Yes)
+                    {
+                        try
+                        {
+                            if (category.Books != null && category.Books.Count > 0)
+                            {
+                                var dr = MessageBox.Show(BookStoreConstants.MSG_CATEGORY_CONFIRM_DELETE, BookStoreConstants.CONFIRM_DIALOG_NAME, MessageBoxButtons.YesNo);
+                                if (dr == DialogResult.No)
+                                {
+                                    return;
+                                }
+
+                                foreach (Book book in category.Books)
+                                {
+                                    book.CategoryId = null;
+                                }
+                            }
+                            _caregoryService.Delete(category);
+                            SearchCategory(txtFilter.Text);
+                        }
+                        catch (Exception)
+                        {
+                            MessageBox.Show(BookStoreConstants.MSG_DB_ERROR);
+                        }
+                    }
+                }
+            }
         }
 
         #endregion
 
         #region Private Methods
 
-        private void initGridView(User user)
+        private void InitGridView(User user)
         {
-            // Initialize the DataGridView.
-            grvCategory = new DataGridView();
-            grvCategory.AutoGenerateColumns = false;
-            grvCategory.AutoSize = false;
-            grvCategory.Dock = DockStyle.Fill;
-            grvCategory.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            //grvCategory.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
-            grvCategory.CellContentClick += grvCategory_CellContentClick;
-
-            DataGridViewCellStyle style = grvCategory.ColumnHeadersDefaultCellStyle;
+            gridViewCategory.AutoGenerateColumns = false;
+            gridViewCategory.AutoSize = false;
+            DataGridViewCellStyle style = gridViewCategory.ColumnHeadersDefaultCellStyle;
             style.BackColor = Color.Navy;
             style.ForeColor = Color.White;
-            style.Font = new Font(grvCategory.Font, FontStyle.Bold);
+            style.Font = new Font(gridViewCategory.Font, FontStyle.Bold);
 
             DataGridViewColumn colId = new DataGridViewTextBoxColumn();
             colId.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
             colId.DataPropertyName = "Id";
             colId.Name = "Id";
             colId.Visible = false;
-            grvCategory.Columns.Add(colId);
+            gridViewCategory.Columns.Add(colId);
 
             DataGridViewColumn colTitle = new DataGridViewTextBoxColumn();
             colTitle.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
             colTitle.DataPropertyName = "Title";
             colTitle.Name = "Title";
-            grvCategory.Columns.Add(colTitle);
+            gridViewCategory.Columns.Add(colTitle);
 
             DataGridViewColumn colDescription = new DataGridViewTextBoxColumn();
             colDescription.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
             colDescription.Name = "Description";
             colDescription.DataPropertyName = "Description";
-            grvCategory.Columns.Add(colDescription);
+            gridViewCategory.Columns.Add(colDescription);
 
             DataGridViewImageColumn colEdit = new DataGridViewImageColumn();
             colEdit.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -153,7 +140,7 @@ namespace BookStore
             colEdit.Width = 60;
             colEdit.Image = new Bitmap(Properties.Resources.edit_24);
             colEdit.DataPropertyName = "Edit";
-            grvCategory.Columns.Add(colEdit);
+            gridViewCategory.Columns.Add(colEdit);
 
             if (user.Role.RoleType == BookStoreConstants.ADMIN_ROLE_TYPE)
             {
@@ -163,25 +150,18 @@ namespace BookStore
                 colEdit.Width = 60;
                 colDel.Image = new Bitmap(Properties.Resources.del_24);
                 colDel.DataPropertyName = "Delete";
-                grvCategory.Columns.Add(colDel);
+                gridViewCategory.Columns.Add(colDel);
             }
 
-            pnlGrid.Controls.Add(grvCategory);
+            gridViewCategory.CellContentClick += grvCategory_CellContentClick;
         }
 
         private void SearchCategory(string strText)
         {
-            var lstCategories = _caregoryService.SearchCategory(strText);
-            txtTotalRecord.Text = lstCategories.Count().ToString();
-            grvCategory.DataSource = lstCategories.ToList();
+            var lstCategories = _caregoryService.SearchCategory(strText).ToList();
+            txtTotalRecord.Text = lstCategories.Count.ToString();
+            gridViewCategory.DataSource = lstCategories.OrderBy(t=>t.Title).ToList();
         }
-
-        private void AddUpdateItemCallbackFn(string item)
-        {
-            _caregoryService = new CategoryService(new BookStoreDB());
-            SearchCategory(txtFilter.Text);
-        }
-
         #endregion
     }
 }

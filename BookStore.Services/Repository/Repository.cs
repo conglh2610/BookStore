@@ -47,9 +47,8 @@ namespace BookStore.Services.Repository
             return _dbContext.SaveChanges() > 0;
         }
 
-        public bool Delete(int id)
+        public bool Delete(T entity)
         {
-            var entity = _dbContext.Set<T>().Find(id);
             if (entity != null)
             {
                 _dbContext.Entry(entity).State = EntityState.Deleted;

@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using BookStore.Model.Generated;
 using BookStore.Services.Services;
 using System.IO;
-using BookStore.Services.Repository;
 using BookStote.Helpers;
 
 namespace BookStore
@@ -21,7 +16,6 @@ namespace BookStore
         private readonly BookService _bookService;
         private Book _book;
         string _orgFileName = string.Empty;
-        public Deletgates.AddItemDelegate AddUpdateItemCallback { get; internal set; }
         #endregion
 
         #region Constructors
@@ -46,7 +40,7 @@ namespace BookStore
                 rtbDescription.Text = book.Description;
                 txtPublisher.Text = book.Publisher;
                 txtYear.Text = book.Year.ToString();
-                cbxAuthor.SelectedValue = book.AuthorId;
+                cbxAuthor.SelectedValue = book.AuthorId ?? 0;
                 cbxCategory.SelectedValue = book.CategoryId ?? 0;
 
                 if (!string.IsNullOrEmpty(book.Cover) && File.Exists(book.Cover.GetFullPath(BookStoreConstants.BOOK_DIR_PATH)))
@@ -54,7 +48,7 @@ namespace BookStore
                     picCover.Image = Image.FromFile(book.Cover.GetFullPath(BookStoreConstants.BOOK_DIR_PATH));
                 }
 
-                btnSave.Text = "Update";
+                btnSave.Text = BookStoreConstants.BUTTON_TEXT_UPDATE;
                 if (user.Role.RoleType != BookStoreConstants.ADMIN_ROLE_TYPE)
                 {
                     btnSave.Location = btnDelete.Location;
@@ -64,7 +58,7 @@ namespace BookStore
 
             else
             {
-                btnSave.Text = "Insert";
+                btnSave.Text = BookStoreConstants.BUTTON_TEXT_ADD;
                 btnSave.Location = btnDelete.Location;
                 btnDelete.Visible = false;
             }
@@ -111,7 +105,7 @@ namespace BookStore
                 }
                 _book.LastUpdateTime = DateTime.Now;
                 _bookService.Upsert(_book);
-
+                this.DialogResult = DialogResult.OK;
                 this.Close();
             }
 
@@ -124,7 +118,7 @@ namespace BookStore
             {
                 try
                 {
-                    _bookService.Delete(_book.Id);
+                    _bookService.Delete(_book);
                 }
                 catch (Exception ex)
                 {
@@ -154,11 +148,6 @@ namespace BookStore
                 picCover.Image = Image.FromFile(fd.FileName);
                 _orgFileName = fd.FileName;
             }
-        }
-
-        protected override void OnFormClosing(FormClosingEventArgs e)
-        {
-            AddUpdateItemCallback("");
         }
 
         private void txtYear_KeyPress(object sender, KeyPressEventArgs e)

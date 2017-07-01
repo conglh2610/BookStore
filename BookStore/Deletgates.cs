@@ -8,7 +8,7 @@ namespace BookStore
 {
     public class Deletgates
     {
-        public delegate void AddItemDelegate(string strValue);
+        public delegate void AddUpdateItemDelegate();
         public delegate void UserResitryDelegate(string strEmail, string strPassword);
     }
 }

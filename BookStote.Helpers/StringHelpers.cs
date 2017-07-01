@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace BookStote.Helpers
 {
@@ -47,8 +43,7 @@ namespace BookStote.Helpers
 #if DEBUG
             return $@"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}{subDir}\{cover}";
 #else
-            MessageBox.Show($"{Directory.GetCurrentDirectory()}{subDir}{cover}");
-            return $"{Directory.GetCurrentDirectory()}{subDir}{cover}"; 
+            return $@"{Directory.GetCurrentDirectory()}{subDir}\{cover}"; 
 #endif
         }
     }

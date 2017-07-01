@@ -1,26 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing;
 using System.Windows.Forms;
 using BookStore.Model.Generated;
-using BookStore.Services.Services;
 using System.IO;
 using BookStote.Helpers;
 using static BookStore.Deletgates;
+using System;
 
 namespace BookStore.CustomControls
 {
     public partial class BookItem : UserControl
     {
         #region Global Viarables
-        Book _book = null;
-        User _user = null;
-        public AddItemDelegate AddUpdateItemCallback { get; internal set; }
+
+        readonly Book _book;
+        readonly User _user;
+        public AddUpdateItemDelegate AddUpdateItemCallback { get; internal set; }
         #endregion
 
         #region Constructors
@@ -29,7 +23,7 @@ namespace BookStore.CustomControls
         {
             InitializeComponent();
         }
-        public BookItem(Book book, User user, AddItemDelegate adddUpdateItemCallback)
+        public BookItem(Book book, User user, AddUpdateItemDelegate adddUpdateItemCallback)
         {
             InitializeComponent();
             _user = user;
@@ -39,7 +33,7 @@ namespace BookStore.CustomControls
             lblTitle.Text = book.Title;
             lblPublisher.Text = book.Publisher;
             lblYear.Text = book.Year.ToString();
-            lblAuthor.Text = book.Author.Title;
+            lblAuthor.Text = book.Author?.Title ?? String.Empty;
             lblDescription.Text = book.Description;
 
             toolTip1.SetToolTip(lblTitle, book.Title);
@@ -59,16 +53,14 @@ namespace BookStore.CustomControls
         #region Events
         private void lblTitle_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            var bookDetailDialog =
-                new BookDetail(_book, _user) { AddUpdateItemCallback = AddUpdateItemCallbackFn };
-            bookDetailDialog.ShowDialog();
-        }
-        #endregion
-
-        #region Private Methods
-        private void AddUpdateItemCallbackFn(string strValue)
-        {
-            AddUpdateItemCallback("");
+            using (var bookDetailDialog = new BookDetail(_book, _user))
+            {
+                DialogResult dr = bookDetailDialog.ShowDialog();
+                if (dr == DialogResult.OK)
+                {
+                    AddUpdateItemCallback();
+                }
+            }
         }
         #endregion
     }

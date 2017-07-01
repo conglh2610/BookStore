@@ -29,12 +29,14 @@
         private void InitializeComponent()
         {
             this.btnAddCategory = new System.Windows.Forms.Button();
-            this.btnBack = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.pnlGrid = new System.Windows.Forms.Panel();
+            this.gridViewCategory = new System.Windows.Forms.DataGridView();
             this.label2 = new System.Windows.Forms.Label();
             this.txtTotalRecord = new System.Windows.Forms.TextBox();
             this.txtFilter = new System.Windows.Forms.TextBox();
+            this.pnlGrid.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewCategory)).BeginInit();
             this.SuspendLayout();
             // 
             // btnAddCategory
@@ -47,16 +49,6 @@
             this.btnAddCategory.UseVisualStyleBackColor = true;
             this.btnAddCategory.Click += new System.EventHandler(this.btnAddCategory_Click);
             // 
-            // btnBack
-            // 
-            this.btnBack.Location = new System.Drawing.Point(491, 77);
-            this.btnBack.Name = "btnBack";
-            this.btnBack.Size = new System.Drawing.Size(61, 23);
-            this.btnBack.TabIndex = 3;
-            this.btnBack.Text = "Back";
-            this.btnBack.UseVisualStyleBackColor = true;
-            this.btnBack.Click += new System.EventHandler(this.btnBack_Click);
-            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -68,10 +60,24 @@
             // 
             // pnlGrid
             // 
+            this.pnlGrid.Controls.Add(this.gridViewCategory);
             this.pnlGrid.Location = new System.Drawing.Point(24, 108);
             this.pnlGrid.Name = "pnlGrid";
             this.pnlGrid.Size = new System.Drawing.Size(528, 250);
             this.pnlGrid.TabIndex = 6;
+            // 
+            // gridViewCategory
+            // 
+            this.gridViewCategory.AllowUserToAddRows = false;
+            this.gridViewCategory.AllowUserToDeleteRows = false;
+            this.gridViewCategory.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.gridViewCategory.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.gridViewCategory.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gridViewCategory.Location = new System.Drawing.Point(0, 0);
+            this.gridViewCategory.Name = "gridViewCategory";
+            this.gridViewCategory.ReadOnly = true;
+            this.gridViewCategory.Size = new System.Drawing.Size(528, 250);
+            this.gridViewCategory.TabIndex = 0;
             // 
             // label2
             // 
@@ -107,19 +113,17 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.pnlGrid);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.btnBack);
             this.Controls.Add(this.btnAddCategory);
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
             this.Name = "CategoryManagement";
             this.Text = "Category Management";
             this.Controls.SetChildIndex(this.btnAddCategory, 0);
-            this.Controls.SetChildIndex(this.btnBack, 0);
             this.Controls.SetChildIndex(this.label1, 0);
             this.Controls.SetChildIndex(this.pnlGrid, 0);
             this.Controls.SetChildIndex(this.label2, 0);
             this.Controls.SetChildIndex(this.txtTotalRecord, 0);
             this.Controls.SetChildIndex(this.txtFilter, 0);
+            this.pnlGrid.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewCategory)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -127,11 +131,11 @@
 
         #endregion
         private System.Windows.Forms.Button btnAddCategory;
-        private System.Windows.Forms.Button btnBack;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Panel pnlGrid;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txtTotalRecord;
         private System.Windows.Forms.TextBox txtFilter;
+        private System.Windows.Forms.DataGridView gridViewCategory;
     }
 }

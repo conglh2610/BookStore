@@ -4,14 +4,12 @@ using BookStote.Helpers;
 using System;
 using System.ComponentModel;
 using System.Windows.Forms;
-using static BookStore.Deletgates;
 
 namespace BookStore
 {
     public partial class CategoryDetail : Form
     {
         #region Global Variables
-        public AddItemDelegate AddUpdateItemCallback { get; internal set; }
         private readonly CategoryService _categoryService;
         private Category _category;
 
@@ -24,15 +22,15 @@ namespace BookStore
             InitializeComponent();
         }
 
-        public CategoryDetail(User user, Category category)
+        public CategoryDetail(User user, Category category, CategoryService caregoryService)
         {
             InitializeComponent();
             _category = category;
-            _categoryService = new CategoryService(new BookStoreDB());
+            _categoryService = caregoryService;
             if (category != null && category.Id > 0)
             {
                 _category = category;
-                this.btnSave.Text = "Update";
+                this.btnSave.Text = BookStoreConstants.BUTTON_TEXT_UPDATE;
                 txtTitle.Text = category.Title;
                 rtbDesription.Text = category.Description;
 
@@ -45,7 +43,7 @@ namespace BookStore
 
             else
             {
-                btnSave.Text = "Insert";
+                btnSave.Text = BookStoreConstants.BUTTON_TEXT_ADD; 
                 btnSave.Location = btnDelete.Location;
                 btnDelete.Visible = false;
             }
@@ -72,7 +70,7 @@ namespace BookStore
                 _category.Description = rtbDesription.Text;
 
                 _categoryService.Upsert(_category);
-
+                this.DialogResult = DialogResult.OK;
                 this.Close();
             }
 
@@ -85,14 +83,27 @@ namespace BookStore
             {
                 try
                 {
-                    _categoryService.Delete(_category.Id);
-                    AddUpdateItemCallback("");
+                    if(_category.Books != null && _category.Books.Count > 0)
+                    {
+                        var dr = MessageBox.Show(BookStoreConstants.MSG_CATEGORY_CONFIRM_DELETE, BookStoreConstants.CONFIRM_DIALOG_NAME, MessageBoxButtons.YesNo);
+                        if (dr == DialogResult.No)
+                        {
+                            return;
+                        }
+
+                        foreach (Book book in _category.Books)
+                        {
+                            book.CategoryId = null;
+                        }
+                    }
+
+                    _categoryService.Delete(_category);
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show(BookStoreConstants.MSG_DB_ERROR + ex.Message);
                 }
-
+                this.DialogResult = DialogResult.OK;
                 this.Close();
             }
         }
@@ -117,10 +128,6 @@ namespace BookStore
             }
         }
 
-        protected override void OnFormClosing(FormClosingEventArgs e)
-        {
-            AddUpdateItemCallback("");
-        }
         #endregion
     }
 }

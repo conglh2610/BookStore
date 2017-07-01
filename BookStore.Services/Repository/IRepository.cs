@@ -12,7 +12,7 @@ namespace BookStore.Services.Repository
         IList<T> Query();
         IList<T> Filter(Func<T, bool> predicate);
         bool Upsert(T entity);
-        bool Delete(int id);
+        bool Delete(T entity);
         
     }
    

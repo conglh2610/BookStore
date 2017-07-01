@@ -12,7 +12,6 @@ namespace BookStore
     public partial class AuthorDetail : Form
     {
         #region Global Viarables
-        public Deletgates.AddItemDelegate AddUpdateItemCallback { get; internal set; }
         private readonly AuthorService _authorService;
         private Author _author;
         string _orgFileName;
@@ -25,17 +24,17 @@ namespace BookStore
             InitializeComponent();
         }
 
-        public AuthorDetail(User user, Author author)
+        public AuthorDetail(User user, Author author, AuthorService authorService)
         {
             InitializeComponent();
 
             _author = author;
-            _authorService = new AuthorService(new BookStoreDB());
+            _authorService = authorService;
             _orgFileName = string.Empty;
 
             if (author != null && author.Id > 0)
             {
-                this.btnSave.Text = "Update";
+                this.btnSave.Text = BookStoreConstants.BUTTON_TEXT_UPDATE;
                 _author = author;
                 txtTitle.Text = author.Title;
                 rtbDescription.Text = author.Description;
@@ -57,7 +56,7 @@ namespace BookStore
             else
             {
                 // setting for insert mode
-                btnSave.Text = "Insert";
+                btnSave.Text = BookStoreConstants.BUTTON_TEXT_ADD;
                 btnSave.Location = btnDelete.Location;
                 btnDelete.Visible = false;
             }
@@ -85,16 +84,19 @@ namespace BookStore
                 if (!string.IsNullOrEmpty(_orgFileName))
                 {
                     var filePath = $"{Guid.NewGuid()}{Path.GetExtension(_orgFileName).ToLower()}";
-                    if (FileHelpers.TryCopyFile(_orgFileName, filePath.GetFullPath(BookStoreConstants.BOOK_DIR_PATH)))
+                    if (FileHelpers.TryCopyFile(_orgFileName, filePath.GetFullPath(BookStoreConstants.AUTHOR_DIR_PATH)))
                     {
                         _author.Cover = filePath;
                     }
                 }
 
-                _authorService.Upsert(_author);
-            }
+                _author.Title = txtTitle.Text;
+                _author.Description = rtbDescription.Text;
 
-            this.Close();
+                _authorService.Upsert(_author);
+                this.DialogResult = DialogResult.OK;
+                this.Close();
+            }
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
@@ -104,7 +106,21 @@ namespace BookStore
             {
                 try
                 {
-                    _authorService.Delete(_author.Id);
+                    if (_author.Books != null && _author.Books.Count > 0)
+                    {
+                        var dr = MessageBox.Show(BookStoreConstants.MSG_AUTHOR_CONFIRM_DELETE, BookStoreConstants.CONFIRM_DIALOG_NAME, MessageBoxButtons.YesNo);
+                        if (dr == DialogResult.No)
+                        {
+                            return;
+                        }
+
+                        foreach (Book book in _author.Books)
+                        {
+                            book.AuthorId = null;
+                        }
+                    }
+
+                    _authorService.Delete(_author);
                 }
                 catch (Exception ex)
                 {
@@ -149,10 +165,6 @@ namespace BookStore
             }
         }
 
-        protected override void OnFormClosing(FormClosingEventArgs e)
-        {
-            AddUpdateItemCallback("");
-        }
         #endregion
     }
 }

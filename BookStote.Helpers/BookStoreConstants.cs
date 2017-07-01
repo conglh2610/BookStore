@@ -33,5 +33,15 @@ namespace BookStote.Helpers
         public const string MSG_REGISTRY_DUPPLICATED = "Email address is really existing.";
 
         public const string MSG_CONFIRM_DELETE = "Are you sure to delete this record?";
+
+        public const string MSG_CATEGORY_CONFIRM_DELETE = "This category is being used. Are you sure to delete?";
+
+        public const string MSG_AUTHOR_CONFIRM_DELETE = "This author is being used. Are you sure to delete?";
+
+        public const string BUTTON_TEXT_UPDATE = "Update";
+
+        public const string BUTTON_TEXT_ADD = "Add";
+
+        public const string BUTTON_TEXT_DELETE = "Delete";
     }
 }

@@ -12,6 +12,6 @@ namespace BookStore.Services.Services
 {
     public interface IBookService : IRepository<Book>
     {
-        IEnumerable<Book> SearchBook(string strFilter, string strYear, int intAuthorId, int intCategoryId);
+        IList<Book> SearchBook(string strFilter, string strYear, int intAuthorId, int intCategoryId);
     }
 }

@@ -20,5 +20,7 @@ namespace BookStore.Model.Generated
 
         [Column(TypeName = "datetime2")]
         public DateTime? LastUpdateTime { get; set; }
+
+        public virtual IList<Book> Books { get; set; }
     }
 }

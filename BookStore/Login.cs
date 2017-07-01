@@ -85,10 +85,13 @@ namespace BookStore
 
         private void btnRegistry_Click(object sender, EventArgs e)
         {
-            var registryForm = new Registry(_db);
-            registryForm.UserResitryCallback = new Deletgates.UserResitryDelegate(UserResitryFn);
-            registryForm.ShowDialog();
+            using (var registryForm = new Registry(_db))
+            {
+                registryForm.UserResitryCallback = UserResitryFn;
+                registryForm.ShowDialog();
+            }
         }
+            
         #endregion
 
         #region Private Methods

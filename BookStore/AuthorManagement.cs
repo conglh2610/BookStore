@@ -2,14 +2,9 @@
 using BookStore.Services.Services;
 using BookStote.Helpers;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using static BookStore.Deletgates;
 
 namespace BookStore
 {
@@ -17,13 +12,12 @@ namespace BookStore
     {
         #region Global Variables
 
-        readonly User _user = null;
-        AuthorService _authorService = null;
-        DataGridView grvAuthor = null;
+        readonly User _user;
+        AuthorService _authorService;
         #endregion
 
         #region Constructors
-        public AuthorManagement() : base()
+        public AuthorManagement()
         {
             InitializeComponent();
         }
@@ -33,129 +27,119 @@ namespace BookStore
             InitializeComponent();
             _user = user;
             _authorService = new AuthorService(new BookStoreDB());
-            initGridView(user);
+            InitGridView(user);
             SearchAuthor(txtFilter.Text);
         }
 
         #endregion
 
         #region Events Handler
-
-        /// <summary>
-        /// On Button Add Author Clicked
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void btnAddAuthor_Click(object sender, EventArgs e)
         {
-            var caregoryFrom = new AuthorDetail(_user, null);
-            caregoryFrom.AddUpdateItemCallback = new AddItemDelegate(this.AddUpdateItemCallbackFn);
-            caregoryFrom.ShowDialog();
+            using (var caregoryFrom = new AuthorDetail(_user, null, _authorService))
+            {
+                DialogResult dr = caregoryFrom.ShowDialog();
+                if (dr == DialogResult.OK)
+                {
+                    SearchAuthor(txtFilter.Text);
+                }
+            }
         }
-        
-        /// <summary>
-        /// On the filter textbox changed
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void txtFilter_TextChanged(object sender, EventArgs e)
         {
             SearchAuthor(txtFilter.Text);
         }
 
-        /// <summary>
-        /// Handle clicking on row Edit or row Delete
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void grvAuthor_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.ColumnIndex == grvAuthor.Columns["Edit"].Index && e.RowIndex >= 0)
+            if (e.RowIndex < 0)
             {
-                var currentRow = grvAuthor.Rows[e.RowIndex];
-                Author authorUpdate = new Author();
-                authorUpdate.Id = Convert.ToInt32(currentRow.Cells["Id"].Value);
-                authorUpdate.Title = currentRow.Cells["Title"].Value.ToString();
-                var descriptionValue = currentRow.Cells["Description"].Value;
-                authorUpdate.Description = descriptionValue?.ToString() ?? string.Empty;
-                var coverValue = currentRow.Cells["Cover"].Value;
-                authorUpdate.Cover = coverValue?.ToString() ?? string.Empty;
-                var caregoryFrom = new AuthorDetail(_user, authorUpdate);
-                caregoryFrom.AddUpdateItemCallback = new AddItemDelegate(this.AddUpdateItemCallbackFn);
-                caregoryFrom.ShowDialog();
-
+                return;
             }
+            // get current Category
+            var author = _authorService.GetById(Convert.ToInt32(gridViewAuthor.Rows[e.RowIndex].Cells["Id"].Value));
 
-            else if (e.ColumnIndex == grvAuthor.Columns["Delete"].Index && e.RowIndex >= 0)
+            // for Editing
+            if (e.ColumnIndex == gridViewAuthor.Columns["Edit"].Index)
             {
-                DialogResult result = MessageBox.Show(BookStoreConstants.MSG_CONFIRM_DELETE, BookStoreConstants.CONFIRM_DIALOG_NAME, MessageBoxButtons.YesNo);
-                if (result == DialogResult.Yes)
+                using (var authorFrom = new AuthorDetail(_user, author, _authorService))
                 {
-                    try
+                    var dr = authorFrom.ShowDialog();
+                    if (dr == DialogResult.OK)
                     {
-                        var authorDelete = _authorService.GetById(Convert.ToInt32(grvAuthor.Rows[e.RowIndex].Cells["Id"].Value));
-                        _authorService.Delete(authorDelete.Id);
+                        _authorService = new AuthorService(new BookStoreDB());
                         SearchAuthor(txtFilter.Text);
                     }
-                    catch (Exception ex)
+                }
+            }
+
+            // for Deleting
+            else
+            {
+                var deleteColumn = gridViewAuthor.Columns["Delete"];
+                if (deleteColumn != null && e.ColumnIndex == deleteColumn.Index)
+                {
+                    DialogResult result = MessageBox.Show(BookStoreConstants.MSG_CONFIRM_DELETE, BookStoreConstants.CONFIRM_DIALOG_NAME, MessageBoxButtons.YesNo);
+                    if (result == DialogResult.Yes)
                     {
-                        MessageBox.Show(BookStoreConstants.MSG_DB_ERROR + ex.Message);
-                        _authorService.Dispose();
+                        try
+                        {
+                            if (author.Books != null && author.Books.Count > 0)
+                            {
+                                var dr = MessageBox.Show(BookStoreConstants.MSG_AUTHOR_CONFIRM_DELETE, BookStoreConstants.CONFIRM_DIALOG_NAME, MessageBoxButtons.YesNo);
+                                if (dr == DialogResult.No)
+                                {
+                                    return;
+                                }
+
+                                foreach (Book book in author.Books)
+                                {
+                                    book.AuthorId = null;
+                                }
+                            }
+                            _authorService.Delete(author);
+                            SearchAuthor(txtFilter.Text);
+                        }
+                        catch (Exception)
+                        {
+                            MessageBox.Show(BookStoreConstants.MSG_DB_ERROR);
+                        }
                     }
-                    
                 }
             }
         }
 
-        private void btnBack_Click(object sender, EventArgs e)
-        {
-            var bookMngtForm = new BookManagement(_user);
-            bookMngtForm.Show();
-            this.Close();
-        }
         #endregion
 
         #region Private Methods
 
-        private void initGridView(User user)
+        private void InitGridView(User user)
         {
-            // Initialize the DataGridView.
-            grvAuthor = new DataGridView();
-            grvAuthor.AutoGenerateColumns = false;
-            grvAuthor.AutoSize = false;
-            grvAuthor.Dock = DockStyle.Fill;
-            grvAuthor.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            
-            grvAuthor.CellContentClick += grvAuthor_CellContentClick;
-
-            DataGridViewCellStyle style = grvAuthor.ColumnHeadersDefaultCellStyle;
+            gridViewAuthor.AutoGenerateColumns = false;
+            gridViewAuthor.AutoSize = false;
+            DataGridViewCellStyle style = gridViewAuthor.ColumnHeadersDefaultCellStyle;
             style.BackColor = Color.Navy;
             style.ForeColor = Color.White;
-            style.Font = new Font(grvAuthor.Font, FontStyle.Bold);
+            style.Font = new Font(gridViewAuthor.Font, FontStyle.Bold);
 
             DataGridViewColumn colId = new DataGridViewTextBoxColumn();
+            colId.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
             colId.DataPropertyName = "Id";
             colId.Name = "Id";
             colId.Visible = false;
-            grvAuthor.Columns.Add(colId);
-
-            DataGridViewColumn colCover = new DataGridViewTextBoxColumn();
-            colCover.DataPropertyName = "Cover";
-            colCover.Name = "Cover";
-            colCover.Visible = false;
-            grvAuthor.Columns.Add(colCover);
+            gridViewAuthor.Columns.Add(colId);
 
             DataGridViewColumn colTitle = new DataGridViewTextBoxColumn();
             colTitle.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
             colTitle.DataPropertyName = "Title";
             colTitle.Name = "Title";
-            grvAuthor.Columns.Add(colTitle);
+            gridViewAuthor.Columns.Add(colTitle);
 
             DataGridViewColumn colDescription = new DataGridViewTextBoxColumn();
             colDescription.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
             colDescription.Name = "Description";
             colDescription.DataPropertyName = "Description";
-            grvAuthor.Columns.Add(colDescription);
+            gridViewAuthor.Columns.Add(colDescription);
 
             DataGridViewImageColumn colEdit = new DataGridViewImageColumn();
             colEdit.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -163,7 +147,7 @@ namespace BookStore
             colEdit.Width = 60;
             colEdit.Image = new Bitmap(Properties.Resources.edit_24);
             colEdit.DataPropertyName = "Edit";
-            grvAuthor.Columns.Add(colEdit);
+            gridViewAuthor.Columns.Add(colEdit);
 
             if (user.Role.RoleType == BookStoreConstants.ADMIN_ROLE_TYPE)
             {
@@ -173,23 +157,17 @@ namespace BookStore
                 colEdit.Width = 60;
                 colDel.Image = new Bitmap(Properties.Resources.del_24);
                 colDel.DataPropertyName = "Delete";
-                grvAuthor.Columns.Add(colDel);
+                gridViewAuthor.Columns.Add(colDel);
             }
 
-            pnlGrid.Controls.Add(grvAuthor);
+            gridViewAuthor.CellContentClick += grvAuthor_CellContentClick;
         }
 
         private void SearchAuthor(string strText)
         {
-            var lstAuthors = _authorService.SearchAuthor(strText);
-            txtTotalRecord.Text = lstAuthors.Count().ToString();
-            grvAuthor.DataSource = lstAuthors.ToList();
-        }
-
-        private void AddUpdateItemCallbackFn(string item)
-        {
-            _authorService = new AuthorService(new BookStoreDB());
-            SearchAuthor(txtFilter.Text);
+            var lstAuthors = _authorService.SearchAuthor(strText).ToList();
+            txtTotalRecord.Text = lstAuthors.Count.ToString();
+            gridViewAuthor.DataSource = lstAuthors.OrderBy(t=>t.Title).ToList();
         }
 
         #endregion
