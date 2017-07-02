@@ -43,7 +43,7 @@ namespace BookStore
         #region Events
         private void btnSave_Click(object sender, EventArgs e)
         {
-            if (this.ValidateChildren(ValidationConstraints.Enabled))
+            if (OnValidating())
             {
                 if (_book != null && _book.Id > 0)
                 {
@@ -109,92 +109,21 @@ namespace BookStore
         private void btnBrowser_Click(object sender, EventArgs e)
         {
             // Browser and display image.
-            OpenFileDialog fd = new OpenFileDialog();
-            fd.Filter = BookStoreConstants.IMAGE_FILETER;
-            DialogResult dr = fd.ShowDialog();
-
-            // get directory to save file
-            if (dr == DialogResult.OK)
+            using (OpenFileDialog fd = new OpenFileDialog())
             {
-                picCover.Image = Image.FromFile(fd.FileName);
-                _orgFileName = fd.FileName;
+                fd.Filter = BookStoreConstants.IMAGE_FILETER;
+                DialogResult dr = fd.ShowDialog();
+
+                // get directory to save file
+                if (dr == DialogResult.OK)
+                {
+                    picCover.Image = Image.FromFile(fd.FileName);
+                    _orgFileName = fd.FileName;
+                }
             }
+
         }
 
-        private void txtYear_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) &&
-                   (e.KeyChar != '.'))
-            {
-                e.Handled = true;
-            }
-
-            // only allow one decimal point
-            if ((e.KeyChar == '.') && ((sender as TextBox).Text.IndexOf('.') > -1))
-            {
-                e.Handled = true;
-            }
-        }
-
-        private void txtTitle_Validating(object sender, CancelEventArgs e)
-        {
-            TextBox objTextBox = (TextBox)sender;
-
-            if (objTextBox.Text.Trim() == string.Empty)
-            {
-                errorProvider1.SetError(objTextBox, BookStoreConstants.MSG_REQUIRED_FIELD);
-                e.Cancel = true;
-            }
-            else
-            {
-                errorProvider1.SetError(objTextBox, null);
-            }
-        }
-
-        private void cbxAuthor_Validating(object sender, CancelEventArgs e)
-        {
-            ComboBox objCbx = (ComboBox)sender;
-
-            if (Convert.ToInt32(objCbx.SelectedValue) == 0 || string.IsNullOrEmpty(objCbx.Text))
-            {
-                errorProvider1.SetError(objCbx, BookStoreConstants.MSG_REQUIRED_FIELD);
-                e.Cancel = true;
-            }
-            else
-            {
-                errorProvider1.SetError(objCbx, null);
-            }
-        }
-
-        private void txtPublisher_Validating(object sender, CancelEventArgs e)
-        {
-            TextBox objTextBox = (TextBox)sender;
-
-            if (objTextBox.Text.Trim() == string.Empty)
-            {
-                errorProvider1.SetError(objTextBox, BookStoreConstants.MSG_REQUIRED_FIELD);
-                e.Cancel = true;
-            }
-            else
-            {
-                errorProvider1.SetError(objTextBox, null);
-            }
-        }
-
-        private void txtYear_Validating(object sender, CancelEventArgs e)
-        {
-            TextBox objTextBox = (TextBox)sender;
-
-            if (objTextBox.Text.Trim() == string.Empty)
-            {
-                errorProvider1.SetError(objTextBox, BookStoreConstants.MSG_REQUIRED_FIELD);
-                e.Cancel = true;
-            }
-            else
-            {
-                errorProvider1.SetError(objTextBox, null);
-            }
-        }
         #endregion
 
         #region Private Methods
@@ -204,7 +133,6 @@ namespace BookStore
         {
 
             var authorsSource = authorService.Query();
-            authorsSource.Add(new Author { Id = 0, Title = String.Empty });
             // get list from service and bind to datasource
 
             cbxAuthor.DataSource = authorsSource.OrderBy(t => t.Title).ToList();
@@ -257,8 +185,51 @@ namespace BookStore
             }
         }
 
+        private bool OnValidating()
+        {
+            // Validate Title
+            if (String.IsNullOrEmpty(txtTitle.Text.Trim()))
+            {
+                errorProvider1.SetError(txtTitle, BookStoreConstants.MSG_REQUIRED_FIELD);
+                return false;
+            }
+            errorProvider1.SetError(txtTitle, null);
+
+            // Validate Author
+            if (Convert.ToInt32(cbxAuthor.SelectedValue) == 0 || string.IsNullOrEmpty(cbxAuthor.Text))
+            {
+                errorProvider1.SetError(cbxAuthor, BookStoreConstants.MSG_REQUIRED_FIELD);
+                return false;
+            }
+            errorProvider1.SetError(cbxAuthor, null);
+
+            // Validate Year
+            if (String.IsNullOrEmpty(txtYear.Text.Trim()))
+            {
+                errorProvider1.SetError(txtYear, BookStoreConstants.MSG_REQUIRED_FIELD);
+                return false;
+            }
+
+            int validYear;
+            if (!int.TryParse(txtYear.Text, out validYear))
+            {
+                errorProvider1.SetError(txtYear, BookStoreConstants.MSG_FORMAT_NUMBER);
+                return false;
+            }
+            errorProvider1.SetError(txtYear, null);
+
+            // Validate Publisher
+            if (String.IsNullOrEmpty(txtPublisher.Text.Trim()))
+            {
+                errorProvider1.SetError(txtPublisher, BookStoreConstants.MSG_REQUIRED_FIELD);
+                return false;
+            }
+
+            errorProvider1.SetError(txtPublisher, null);
+
+            return true;
+        }
 
         #endregion
-
     }
 }

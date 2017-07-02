@@ -67,7 +67,7 @@ namespace BookStore
         private void btnSave_Click(object sender, EventArgs e)
         {
             // validate before save data
-            if (this.ValidateChildren(ValidationConstraints.Enabled))
+            if (OnValidating())
             {
                 // for update mode
                 if (_author != null && _author.Id > 0)
@@ -136,19 +136,20 @@ namespace BookStore
             this.Close();
         }
 
-        private void txtTitle_Validating(object sender, CancelEventArgs e)
+        private bool OnValidating()
         {
-            TextBox objTextBox = (TextBox)sender;
 
-            if (objTextBox.Text.Trim() == string.Empty)
+            if (txtTitle.Text.Trim() == string.Empty)
             {
-                errorProvider1.SetError(objTextBox, BookStoreConstants.MSG_REQUIRED_FIELD);
-                e.Cancel = true;
+                errorProvider1.SetError(txtTitle, BookStoreConstants.MSG_REQUIRED_FIELD);
+                return false;
             }
             else
             {
-                errorProvider1.SetError(objTextBox, null);
+                errorProvider1.SetError(txtTitle, null);
             }
+
+            return true;
         }
 
         private void btnBrowser_Click(object sender, EventArgs e)

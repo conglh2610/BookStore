@@ -41,7 +41,7 @@ namespace BookStore
         private void btnSubmit_Click(object sender, EventArgs e)
         {
             // validate before save data
-            if (this.ValidateChildren(ValidationConstraints.Enabled))
+            if (this.OnValidating())
             {
                 var user = new User
                 {
@@ -89,73 +89,53 @@ namespace BookStore
             }
         }
 
-        private void txtFirstName_Validating(object sender, CancelEventArgs e)
+        private bool OnValidating()
         {
-            TextBox objTextBox = (TextBox)sender;
-
-            if (objTextBox.Text.Trim() == string.Empty)
+            // Validate First Name
+            if (String.IsNullOrEmpty(txtFirstName.Text.Trim()))
             {
-                errorProvider1.SetError(objTextBox, BookStoreConstants.MSG_REQUIRED_FIELD);
-                e.Cancel = true;
+                errorProvider1.SetError(txtFirstName, BookStoreConstants.MSG_REQUIRED_FIELD);
+                return false;
             }
-            else
+            errorProvider1.SetError(txtFirstName, null);
+
+            // Validate Email
+            if (String.IsNullOrEmpty(txtEmail.Text.Trim()))
             {
-                errorProvider1.SetError(objTextBox, null);
+                errorProvider1.SetError(txtEmail, BookStoreConstants.MSG_REQUIRED_FIELD);
+                return false;
             }
-        }
 
-        private void txtEmail_Validating(object sender, CancelEventArgs e)
-        {
-
-            TextBox objTextBox = (TextBox)sender;
+            // Validate Email Format
             Regex regex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
-            Match match = regex.Match(objTextBox.Text);
+            Match match = regex.Match(txtEmail.Text);
 
-            if (objTextBox.Text.Trim() == string.Empty)
+            if (!match.Success)
             {
-                errorProvider1.SetError(objTextBox, BookStoreConstants.MSG_REQUIRED_FIELD);
-                e.Cancel = true;
+                errorProvider1.SetError(txtEmail, BookStoreConstants.MSG_EMAIL_INCORRECTED_FORMAT);
+                return false;
             }
-            else if (!match.Success)
+            errorProvider1.SetError(txtEmail, null);
+
+            // Validate Password
+            if (String.IsNullOrEmpty(txtPassword.Text.Trim()))
             {
-                errorProvider1.SetError(objTextBox, BookStoreConstants.MSG_EMAIL_INCORRECTED_FORMAT);
-                e.Cancel = true;
+                errorProvider1.SetError(txtPassword, BookStoreConstants.MSG_REQUIRED_FIELD);
+                return false;
             }
-            else
+            errorProvider1.SetError(txtPassword, null);
+
+            // Validate Password Confirm
+            if (txtPassword.Text != txtPasswordConfirm.Text )
             {
-                errorProvider1.SetError(objTextBox, null);
+                errorProvider1.SetError(txtPasswordConfirm, BookStoreConstants.MSG_PASSWORD_NOT_MATCH);
+                return false;
             }
+            errorProvider1.SetError(txtPasswordConfirm, null);
+
+            return true;
         }
-
-        private void txtPassword_Validating(object sender, CancelEventArgs e)
-        {
-            TextBox objTextBox = (TextBox)sender;
-
-            if (objTextBox.Text.Trim() == string.Empty)
-            {
-                errorProvider1.SetError(objTextBox, BookStoreConstants.MSG_REQUIRED_FIELD);
-                e.Cancel = true;
-            }
-            else
-            {
-                errorProvider1.SetError(objTextBox, null);
-            }
-        }
-
-        private void txtPasswordConfirm_Validating(object sender, CancelEventArgs e)
-        {
-            TextBox objTextBox = (TextBox)sender;
-
-            if (objTextBox.Text != txtPassword.Text)
-            {
-                errorProvider1.SetError(objTextBox, BookStoreConstants.MSG_PASSWORD_NOT_MATCH);
-                e.Cancel = true;
-            }
-            else
-            {
-                errorProvider1.SetError(objTextBox, null);
-            }
-        }
+        
         #endregion
     }
 }

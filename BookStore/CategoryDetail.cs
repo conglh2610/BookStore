@@ -2,7 +2,6 @@
 using BookStore.Services.Services;
 using BookStote.Helpers;
 using System;
-using System.ComponentModel;
 using System.Windows.Forms;
 
 namespace BookStore
@@ -55,7 +54,7 @@ namespace BookStore
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            if (this.ValidateChildren(ValidationConstraints.Enabled))
+            if (this.OnValidating())
             {
                 if (_category != null && _category.Id > 0)
                 {
@@ -113,19 +112,20 @@ namespace BookStore
             this.Close();
         }
 
-        private void txtTitle_Validating(object sender, CancelEventArgs e)
+        private bool OnValidating()
         {
-            TextBox objTextBox = (TextBox)sender;
 
-            if (objTextBox.Text.Trim() == string.Empty)
+            if (String.IsNullOrEmpty(txtTitle.Text.Trim()))
             {
-                errorProvider1.SetError(objTextBox, BookStoreConstants.MSG_REQUIRED_FIELD);
-                e.Cancel = true;
+                errorProvider1.SetError(txtTitle, BookStoreConstants.MSG_REQUIRED_FIELD);
+                return false;
             }
             else
             {
-                errorProvider1.SetError(objTextBox, null);
+                errorProvider1.SetError(txtTitle, null);
             }
+
+            return true;
         }
 
         #endregion

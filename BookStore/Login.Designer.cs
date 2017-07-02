@@ -65,7 +65,6 @@
             this.txtUserName.Size = new System.Drawing.Size(175, 20);
             this.txtUserName.TabIndex = 2;
             this.txtUserName.Text = "admin@bookstore.com";
-            this.txtUserName.Validating += new System.ComponentModel.CancelEventHandler(this.txtUserName_Validating);
             // 
             // txtPassword
             // 
@@ -75,7 +74,6 @@
             this.txtPassword.TabIndex = 3;
             this.txtPassword.Text = "123";
             this.txtPassword.UseSystemPasswordChar = true;
-            this.txtPassword.Validating += new System.ComponentModel.CancelEventHandler(this.txtPassword_Validating);
             // 
             // btnLogin
             // 

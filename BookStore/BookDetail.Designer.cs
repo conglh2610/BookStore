@@ -69,7 +69,6 @@
             this.txtTitle.Name = "txtTitle";
             this.txtTitle.Size = new System.Drawing.Size(271, 20);
             this.txtTitle.TabIndex = 1;
-            this.txtTitle.Validating += new System.ComponentModel.CancelEventHandler(this.txtTitle_Validating);
             // 
             // label2
             // 
@@ -82,12 +81,12 @@
             // 
             // cbxAuthor
             // 
+            this.cbxAuthor.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbxAuthor.FormattingEnabled = true;
             this.cbxAuthor.Location = new System.Drawing.Point(89, 51);
             this.cbxAuthor.Name = "cbxAuthor";
             this.cbxAuthor.Size = new System.Drawing.Size(271, 21);
             this.cbxAuthor.TabIndex = 2;
-            this.cbxAuthor.Validating += new System.ComponentModel.CancelEventHandler(this.cbxAuthor_Validating);
             // 
             // label3
             // 
@@ -121,7 +120,6 @@
             this.txtPublisher.Name = "txtPublisher";
             this.txtPublisher.Size = new System.Drawing.Size(271, 20);
             this.txtPublisher.TabIndex = 4;
-            this.txtPublisher.Validating += new System.ComponentModel.CancelEventHandler(this.txtPublisher_Validating);
             // 
             // label5
             // 
@@ -139,8 +137,6 @@
             this.txtYear.Name = "txtYear";
             this.txtYear.Size = new System.Drawing.Size(271, 20);
             this.txtYear.TabIndex = 5;
-            this.txtYear.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtYear_KeyPress);
-            this.txtYear.Validating += new System.ComponentModel.CancelEventHandler(this.txtYear_Validating);
             // 
             // label6
             // 
@@ -199,6 +195,7 @@
             // 
             // cbxCategory
             // 
+            this.cbxCategory.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbxCategory.FormattingEnabled = true;
             this.cbxCategory.Location = new System.Drawing.Point(89, 151);
             this.cbxCategory.Name = "cbxCategory";

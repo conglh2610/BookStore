@@ -16,7 +16,15 @@ namespace BookStote.Helpers
 
         public const string IMAGE_FILETER = "Images only. |*.jpg; *.jpeg; *.png; *.gif";
 
-        public const string MSG_REQUIRED_FIELD = "Please enter the required filed.";
+        public const string MSG_REQUIRED_FIELD = "Please enter the required field.";
+
+        public const string MSG_EMAIL_REQUIRED_FIELD = "Please enter the your email.";
+
+        public const string MSG_PASSWORD_REQUIRED_FIELD = "Please enter the your password.";
+
+        public const string MSG_FORMAT_NUMBER = "Please enter the number.";
+
+        public const string MSG_LOGIN_FAIL = "Your email or password is not correct.";
 
         public const string MSG_EMAIL_INCORRECTED_FORMAT = "Please enter correct email.";
 
