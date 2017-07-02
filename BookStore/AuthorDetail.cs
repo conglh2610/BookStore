@@ -14,7 +14,7 @@ namespace BookStore
         #region Global Viarables
         private readonly AuthorService _authorService;
         private Author _author;
-        string _orgFileName;
+        private string _orgFileName;
         #endregion
 
         #region Constructors

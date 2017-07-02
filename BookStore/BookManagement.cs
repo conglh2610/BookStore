@@ -2,7 +2,6 @@
 using BookStore.Model.Generated;
 using BookStore.Services.Services;
 using System;
-using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -11,9 +10,9 @@ namespace BookStore
     public partial class BookManagement : Main
     {
         #region Global Variables
-        readonly User _user;
-        readonly BookStoreDB _db;
-        BookService _bookService;
+        private readonly User _user;
+        private readonly BookStoreDB _db;
+        private BookService _bookService;
         #endregion
 
         #region Constructors

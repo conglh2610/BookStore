@@ -1,7 +1,6 @@
 ﻿using BookStore.Model.Generated;
 using System;
 using System.Windows.Forms;
-using BookStore.CustomControls;
 
 namespace BookStore
 {

@@ -12,8 +12,8 @@ namespace BookStore
     {
         #region Global Variables
 
-        readonly User _user;
-        AuthorService _authorService;
+        private readonly User _user;
+        private AuthorService _authorService;
         #endregion
 
         #region Constructors

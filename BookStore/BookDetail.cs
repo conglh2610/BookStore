@@ -15,7 +15,7 @@ namespace BookStore
         #region Global Variables
         private readonly BookService _bookService;
         private Book _book;
-        string _orgFileName = string.Empty;
+        private string _orgFileName = string.Empty;
         #endregion
 
         #region Constructors
@@ -32,36 +32,11 @@ namespace BookStore
             PopulateAuthors(authorService);
             PopulateCategories(categoryService);
 
-            if (book != null)
-            {
-                txtTitle.Text = book.Title;
-                rtbDescription.Text = book.Description;
-                txtPublisher.Text = book.Publisher;
-                txtYear.Text = book.Year.ToString();
-                cbxAuthor.SelectedValue = book.AuthorId ?? 0;
-                cbxCategory.SelectedValue = book.CategoryId ?? 0;
-
-                if (!string.IsNullOrEmpty(book.Cover) && File.Exists(book.Cover.GetFullPath(BookStoreConstants.BOOK_DIR_PATH)))
-                {
-                    picCover.Image = Image.FromFile(book.Cover.GetFullPath(BookStoreConstants.BOOK_DIR_PATH));
-                }
-
-                btnSave.Text = BookStoreConstants.BUTTON_TEXT_UPDATE;
-                if (user.Role.RoleType != BookStoreConstants.ADMIN_ROLE_TYPE)
-                {
-                    btnSave.Location = btnDelete.Location;
-                    btnDelete.Visible = false;
-                }
-            }
-
-            else
-            {
-                btnSave.Text = BookStoreConstants.BUTTON_TEXT_ADD;
-                btnSave.Location = btnDelete.Location;
-                btnDelete.Visible = false;
-            }
+            // binding Book
+            PopulateBook(book, user);
 
         }
+        
 
         #endregion
 
@@ -248,6 +223,38 @@ namespace BookStore
             cbxCategory.DisplayMember = "Title";
             cbxCategory.ValueMember = "Id";
 
+        }
+
+        private void PopulateBook(Book book, User user)
+        {
+            if (book != null)
+            {
+                txtTitle.Text = book.Title;
+                rtbDescription.Text = book.Description;
+                txtPublisher.Text = book.Publisher;
+                txtYear.Text = book.Year.ToString();
+                cbxAuthor.SelectedValue = book.AuthorId ?? 0;
+                cbxCategory.SelectedValue = book.CategoryId ?? 0;
+
+                if (!string.IsNullOrEmpty(book.Cover) && File.Exists(book.Cover.GetFullPath(BookStoreConstants.BOOK_DIR_PATH)))
+                {
+                    picCover.Image = Image.FromFile(book.Cover.GetFullPath(BookStoreConstants.BOOK_DIR_PATH));
+                }
+
+                btnSave.Text = BookStoreConstants.BUTTON_TEXT_UPDATE;
+                if (user.Role.RoleType != BookStoreConstants.ADMIN_ROLE_TYPE)
+                {
+                    btnSave.Location = btnDelete.Location;
+                    btnDelete.Visible = false;
+                }
+            }
+
+            else
+            {
+                btnSave.Text = BookStoreConstants.BUTTON_TEXT_ADD;
+                btnSave.Location = btnDelete.Location;
+                btnDelete.Visible = false;
+            }
         }
 
 
