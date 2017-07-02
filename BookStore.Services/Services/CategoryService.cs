@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace BookStore.Services.Services
 {
-    public class CategoryService : Repository<Category>, ICategoryService, IDisposable
+    public class CategoryService : Repository<Category>, ICategoryService
     {
-        BookStoreDB _dbContext = null;
+        private readonly BookStoreDB _dbContext;
         public CategoryService(BookStoreDB dbContext) : base(dbContext)
         {
             _dbContext = dbContext;
@@ -22,9 +22,5 @@ namespace BookStore.Services.Services
             return _dbContext.Category.Where(t => t.Title.Contains(strText) || t.Description.Contains(strText)).AsEnumerable();
         }
 
-        public void Dispose()
-        {
-            GC.SuppressFinalize(this);
-        }
     }
 }

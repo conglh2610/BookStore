@@ -6,9 +6,9 @@ using System.Linq;
 
 namespace BookStore.Services.Services
 {
-    public class UserService : Repository<User>, IUserService, IDisposable
+    public class UserService : Repository<User>, IUserService
     {
-        readonly BookStoreDB _dbContext;
+        private readonly BookStoreDB _dbContext;
         public UserService(BookStoreDB dbContext) : base(dbContext)
         {
             _dbContext = dbContext;
@@ -38,9 +38,5 @@ namespace BookStore.Services.Services
             return _dbContext.User.FirstOrDefault(t => t.Email == strEmail);
         }
 
-        public void Dispose()
-        {
-            GC.SuppressFinalize(this);
-        }
     }
 }
