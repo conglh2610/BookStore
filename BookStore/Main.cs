@@ -29,31 +29,38 @@ namespace BookStore
 
         private void tsCategory_Click(object sender, EventArgs e)
         {
-            new CategoryManagement(_user).Show();
             this.Close();
+            new CategoryManagement(_user).Show();
         }
 
         private void tsLogout_Click(object sender, EventArgs e)
         {
-            new Login().Show();
             this.Close();
+            new Login().Show();
         }
 
         private void tsAuthor_Click(object sender, EventArgs e)
         {
-            new AuthorManagement(_user).Show();
             this.Close();
+            new AuthorManagement(_user).Show();
         }
 
         private void tsBookManagement_Click(object sender, EventArgs e)
         {
-            new BookManagement(_user).Show();
             this.Close();
+            new BookManagement(_user).Show();
         }
 
         #endregion
 
-       
+        private void Main_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+            {
+                this.Close();
+                new Login().Show();
+            }
+        }
     }
 }
 

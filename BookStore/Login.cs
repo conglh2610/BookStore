@@ -36,9 +36,8 @@ namespace BookStore
                 if (user != null)
                 {
                     lblErrorMessage.Text = String.Empty;
-                    var bookForm = new BookManagement(user);
-                    bookForm.Show();
                     this.Hide();
+                    new BookManagement(user).Show();
                 }
 
                 else
@@ -78,7 +77,19 @@ namespace BookStore
                 registryForm.ShowDialog();
             }
         }
-            
+
+        private void Login_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+            {
+                this.Close();
+            }
+        }
+        private void Login_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Application.Exit();
+        }
+
         #endregion
 
         #region Private Methods
@@ -88,6 +99,7 @@ namespace BookStore
             txtPassword.Text = strPassword;
             btnLogin.Focus();
         }
+
         #endregion
     }
 }

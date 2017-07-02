@@ -20,17 +20,20 @@ namespace BookStore
         {
             InitializeComponent();
             var db = new BookStoreDB();
-            _user = user;
-            _db = db;
-            _bookService = new BookService(db);
             // init services 
+            _bookService = new BookService(db);
             var authorService = new AuthorService(db);
             var categoryService = new CategoryService(db);
 
+            _user = user;
+            _db = db;
+
             // create empty value
-            var emptyAuthor = new Author();
-            emptyAuthor.Id = 0;
-            emptyAuthor.Title = "-- All Authors--";
+            var emptyAuthor = new Author
+            {
+                Id = 0,
+                Title = "-- All Authors--"
+            };
 
             // get list from service
             var authorDataSource = authorService.Query();
@@ -44,9 +47,11 @@ namespace BookStore
             cbxAuthor.SelectedValue = 0;
 
             // create empty value
-            var emptyCategory = new Category();
-            emptyCategory.Id = 0;
-            emptyCategory.Title = "--All Categories--";
+            var emptyCategory = new Category
+            {
+                Id = 0,
+                Title = "--All Categories--"
+            };
 
             // get list from service
             var categoryDataSource = categoryService.Query();
@@ -93,7 +98,6 @@ namespace BookStore
             for (int i = 0; i < totalRecords; i++)
             {
                 var bookItem = new BookItem(response[i].Id, _user, SearchBookCallBackFn);
-                //bookItem.Location = new Point((i % 5) * bookItem.Width, (i / 5) * bookItem.Height);
                 flowLayoutBooks.Controls.Add(bookItem);
             }
         }
