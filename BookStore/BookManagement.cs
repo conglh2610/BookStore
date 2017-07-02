@@ -90,13 +90,12 @@ namespace BookStore
             var response = _bookService.SearchBook(txtFilter.Text, txtYear.Text, Convert.ToInt32(cbxAuthor.SelectedValue), Convert.ToInt32(cbxCategory.SelectedValue)).ToList();
             var totalRecords = response.Count();
             txtTotalRecords.Text = totalRecords.ToString();
-            booksRepeater.Width = 860;
-            booksRepeater.Controls.Clear();
+            flowLayoutBooks.Controls.Clear();
             for (int i = 0; i < totalRecords; i++)
             {
                 var bookItem = new BookItem(response[i].Id, _user, SearchBookCallBackFn);
-                bookItem.Location = new Point((i % 5) * bookItem.Width, (i / 5) * bookItem.Height);
-                booksRepeater.Controls.Add(bookItem);
+                //bookItem.Location = new Point((i % 5) * bookItem.Width, (i / 5) * bookItem.Height);
+                flowLayoutBooks.Controls.Add(bookItem);
             }
         }
 

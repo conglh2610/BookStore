@@ -204,9 +204,6 @@
     <Folder Include="Images\Books\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\logout-512.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\logout_24.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

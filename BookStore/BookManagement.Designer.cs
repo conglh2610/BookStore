@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.booksRepeater = new System.Windows.Forms.Panel();
             this.myPanel1 = new BookStore.CustomControls.MyPanel();
             this.btnSearch = new System.Windows.Forms.Button();
             this.txtYear = new System.Windows.Forms.TextBox();
@@ -43,16 +42,9 @@
             this.btnAdd = new System.Windows.Forms.Button();
             this.txtTotalRecords = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
+            this.flowLayoutBooks = new System.Windows.Forms.FlowLayoutPanel();
             this.myPanel1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // booksRepeater
-            // 
-            this.booksRepeater.AutoScroll = true;
-            this.booksRepeater.Location = new System.Drawing.Point(7, 150);
-            this.booksRepeater.Name = "booksRepeater";
-            this.booksRepeater.Size = new System.Drawing.Size(840, 327);
-            this.booksRepeater.TabIndex = 0;
             // 
             // myPanel1
             // 
@@ -65,14 +57,14 @@
             this.myPanel1.Controls.Add(this.label3);
             this.myPanel1.Controls.Add(this.txtFilter);
             this.myPanel1.Controls.Add(this.label2);
-            this.myPanel1.Location = new System.Drawing.Point(7, 82);
+            this.myPanel1.Location = new System.Drawing.Point(8, 82);
             this.myPanel1.Name = "myPanel1";
-            this.myPanel1.Size = new System.Drawing.Size(840, 62);
+            this.myPanel1.Size = new System.Drawing.Size(887, 62);
             this.myPanel1.TabIndex = 1;
             // 
             // btnSearch
             // 
-            this.btnSearch.Location = new System.Drawing.Point(748, 19);
+            this.btnSearch.Location = new System.Drawing.Point(800, 19);
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(75, 23);
             this.btnSearch.TabIndex = 8;
@@ -82,7 +74,7 @@
             // 
             // txtYear
             // 
-            this.txtYear.Location = new System.Drawing.Point(234, 22);
+            this.txtYear.Location = new System.Drawing.Point(244, 22);
             this.txtYear.Name = "txtYear";
             this.txtYear.Size = new System.Drawing.Size(85, 20);
             this.txtYear.TabIndex = 7;
@@ -90,7 +82,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(200, 25);
+            this.label6.Location = new System.Drawing.Point(210, 25);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(32, 13);
             this.label6.TabIndex = 6;
@@ -99,7 +91,7 @@
             // cbxCategory
             // 
             this.cbxCategory.FormattingEnabled = true;
-            this.cbxCategory.Location = new System.Drawing.Point(573, 21);
+            this.cbxCategory.Location = new System.Drawing.Point(616, 21);
             this.cbxCategory.Name = "cbxCategory";
             this.cbxCategory.Size = new System.Drawing.Size(156, 21);
             this.cbxCategory.TabIndex = 5;
@@ -107,7 +99,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(519, 25);
+            this.label4.Location = new System.Drawing.Point(558, 25);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(52, 13);
             this.label4.TabIndex = 4;
@@ -116,15 +108,15 @@
             // cbxAuthor
             // 
             this.cbxAuthor.FormattingEnabled = true;
-            this.cbxAuthor.Location = new System.Drawing.Point(371, 21);
+            this.cbxAuthor.Location = new System.Drawing.Point(393, 21);
             this.cbxAuthor.Name = "cbxAuthor";
-            this.cbxAuthor.Size = new System.Drawing.Size(134, 21);
+            this.cbxAuthor.Size = new System.Drawing.Size(143, 21);
             this.cbxAuthor.TabIndex = 3;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(329, 25);
+            this.label3.Location = new System.Drawing.Point(351, 25);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(41, 13);
             this.label3.TabIndex = 2;
@@ -134,7 +126,7 @@
             // 
             this.txtFilter.Location = new System.Drawing.Point(45, 22);
             this.txtFilter.Name = "txtFilter";
-            this.txtFilter.Size = new System.Drawing.Size(137, 20);
+            this.txtFilter.Size = new System.Drawing.Size(159, 20);
             this.txtFilter.TabIndex = 1;
             // 
             // label2
@@ -158,7 +150,7 @@
             // 
             // btnAdd
             // 
-            this.btnAdd.Location = new System.Drawing.Point(762, 50);
+            this.btnAdd.Location = new System.Drawing.Point(820, 50);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(75, 23);
             this.btnAdd.TabIndex = 3;
@@ -169,7 +161,7 @@
             // txtTotalRecords
             // 
             this.txtTotalRecords.Enabled = false;
-            this.txtTotalRecords.Location = new System.Drawing.Point(750, 492);
+            this.txtTotalRecords.Location = new System.Drawing.Point(759, 492);
             this.txtTotalRecords.Name = "txtTotalRecords";
             this.txtTotalRecords.Size = new System.Drawing.Size(87, 20);
             this.txtTotalRecords.TabIndex = 10;
@@ -177,32 +169,39 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(701, 495);
+            this.label5.Location = new System.Drawing.Point(710, 495);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(34, 13);
             this.label5.TabIndex = 9;
             this.label5.Text = "Total:";
             // 
+            // flowLayoutBooks
+            // 
+            this.flowLayoutBooks.AutoScroll = true;
+            this.flowLayoutBooks.Location = new System.Drawing.Point(7, 159);
+            this.flowLayoutBooks.Name = "flowLayoutBooks";
+            this.flowLayoutBooks.Size = new System.Drawing.Size(888, 327);
+            this.flowLayoutBooks.TabIndex = 11;
+            // 
             // BookManagement
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.ClientSize = new System.Drawing.Size(874, 524);
+            this.AutoScroll = true;
+            this.ClientSize = new System.Drawing.Size(904, 524);
+            this.Controls.Add(this.flowLayoutBooks);
             this.Controls.Add(this.txtTotalRecords);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.btnAdd);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.myPanel1);
-            this.Controls.Add(this.booksRepeater);
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
             this.Name = "BookManagement";
             this.Text = "Landing Page";
-            this.Controls.SetChildIndex(this.booksRepeater, 0);
             this.Controls.SetChildIndex(this.myPanel1, 0);
             this.Controls.SetChildIndex(this.label1, 0);
             this.Controls.SetChildIndex(this.btnAdd, 0);
             this.Controls.SetChildIndex(this.label5, 0);
             this.Controls.SetChildIndex(this.txtTotalRecords, 0);
+            this.Controls.SetChildIndex(this.flowLayoutBooks, 0);
             this.myPanel1.ResumeLayout(false);
             this.myPanel1.PerformLayout();
             this.ResumeLayout(false);
@@ -211,8 +210,6 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.Panel booksRepeater;
         private CustomControls.MyPanel myPanel1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnAdd;
@@ -227,5 +224,6 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox txtYear;
         private System.Windows.Forms.Button btnSearch;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutBooks;
     }
 }
